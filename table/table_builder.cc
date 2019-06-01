@@ -102,19 +102,6 @@ Status TableBuilder::ChangeOptions(const Options& options) {
 void TableBuilder::Add(const Slice& key, const Slice& value) {
   Rep* r = rep_;
   assert(!r->closed);
-  /////////////meggie
-  ParsedInternalKey ikey;
-  ParseInternalKey(key, &ikey);
-  std::set<std::string> mykeys = {
-      "0000000010685388"
-  };
-  if(mykeys.find(ikey.user_key.ToString()) != mykeys.end()){ 
-    DEBUG_T("key %s now is in file%d\n", 
-            ikey.user_key.ToString().c_str(),
-            file_number);
-    //partner_number = file_number;
-  }
-  /////////////meggie
   if (!ok()) return;
   if (r->num_entries > 0) {
     assert(r->options.comparator->Compare(key, Slice(r->last_key)) > 0);

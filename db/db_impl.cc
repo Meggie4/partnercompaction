@@ -995,7 +995,7 @@ void DBImpl::AddFileWithTraditionalCompaction(VersionEdit* edit,
 }
 
 void DBImpl::UpdateFileWithPartnerCompaction(VersionEdit* edit,
-        std::vector<FileMetaData*>& pcompaction_files, 
+        std::vector<uint64_t>& pcompaction_files, 
         std::vector<CompactionState*>& p_compactionstate_list) {
    int sz1 = pcompaction_files.size();
    int sz2 = p_compactionstate_list.size();
@@ -1004,6 +1004,7 @@ void DBImpl::UpdateFileWithPartnerCompaction(VersionEdit* edit,
    for(int i = 0; i < sz1; i++) {
        CompactionState* compact = p_compactionstate_list[i];
        std::vector<Partner> partners;
+	   int level = compact->compaction->level();
        for(size_t j = 0; j < compact->outputs.size(); j++) {
           const CompactionState::Output& out = compact->outputs[j];
           Partner ptner; 
@@ -1013,7 +1014,7 @@ void DBImpl::UpdateFileWithPartnerCompaction(VersionEdit* edit,
           ptner.partner_largest = out.largest;
           partners.push_back(ptner);
        }
-       edit->UpdateFile(pcompaction_files[i], partners);
+       edit->UpdateFile(level + 1, pcompaction_files[i], partners);
    }
 }
 
@@ -1159,11 +1160,6 @@ void DBImpl::DealWithPartnerCompaction(CompactionState* compact,
     Iterator* input = p_sptcompaction->victim_iter;
     InternalKey victim_end = p_sptcompaction->victim_end;
     bool containsend = p_sptcompaction->containsend;
-    
-    FileMetaData* inputs1 = versions_->GetPartnerFileMeta(
-            compact->compaction, p_sptcompaction->inputs1_index);
-    
-    int inputs1_index = p_sptcompaction->inputs1_index;
 
     input->Seek(p_sptcompaction->victim_start.Encode());
     
@@ -1349,7 +1345,7 @@ Status DBImpl::DoSplitCompactionWork(Compaction* c) {
     std::vector<CompactionState*> t_compactionstate_list;
     std::vector<CompactionState*> p_compactionstate_list;
     std::vector<int> tcompaction_index;
-    std::vector<FileMetaData*> pcompaction_files;
+    std::vector<uint64_t> pcompaction_files;
     
     SequenceNumber smallest_snapshot;
     if (snapshots_.empty()) {
@@ -1401,9 +1397,9 @@ Status DBImpl::DoSplitCompactionWork(Compaction* c) {
 	DEBUG_T("----------partner compaction, has:----------\n");
 	if(p_sptcompactions.size() > 0) {
         for(int i = 0; i < p_sptcompactions.size(); i++) {
-           FileMetaData* pcompaction_file = versions_->GetPartnerFileMeta(c, 
-                                    p_sptcompactions[i]->inputs1_index);
-           pcompaction_files.push_back(pcompaction_file);
+		   FileMetaData* fm = c->input(1, p_sptcompactions[i]->inputs1_index);
+		   int number = fm->number;
+           pcompaction_files.push_back(number);
            DEBUG_T("%d, ", p_sptcompactions[i]->inputs1_index);
 		   PartnerCompactionArgs* pcargs = new PartnerCompactionArgs;
 		   pcargs->db = this;

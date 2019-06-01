@@ -117,8 +117,8 @@ class VersionEdit {
   }
 
   ///////////meggie
-  void UpdateFile(FileMetaData* file, std::vector<Partner>& partners) {
-      update_files_.push_back(std::make_pair(file, partners)); 
+  void UpdateFile(int level, uint64_t file, std::vector<Partner>& partners) {
+     updated_files_.push_back(std::make_pair(level, std::make_pair(file, partners))); 
   }
   ///////////meggie
 
@@ -131,7 +131,10 @@ class VersionEdit {
   friend class VersionSet;
 
   typedef std::set< std::pair<int, uint64_t> > DeletedFileSet;
-
+  ///////////////meggie
+  typedef std::vector< std::pair<int, std::pair< uint64_t, std::vector<Partner>>> > UpdatedFileSet;
+  ///////////////meggie
+  
   std::string comparator_;
   uint64_t log_number_;
   uint64_t prev_log_number_;
@@ -146,9 +149,9 @@ class VersionEdit {
   std::vector< std::pair<int, InternalKey> > compact_pointers_;
   DeletedFileSet deleted_files_;
   std::vector< std::pair<int, FileMetaData> > new_files_;
-  ///////////meggie
-  std::vector< std::pair<FileMetaData*, std::vector<Partner>> > update_files_;
-  ///////////meggie
+  /////////meggie
+  UpdatedFileSet updated_files_;
+  /////////meggie
 };
 
 }  // namespace leveldb

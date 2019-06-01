@@ -89,11 +89,6 @@ void MemTable::Add(SequenceNumber s, ValueType type,
   //  key bytes    : char[internal_key.size()]
   //  value_size   : varint32 of value.size()
   //  value bytes  : char[value.size()]
-  /////////////meggie
-  std::string mykey = "user3635567709907321599";
-  if(key.ToString() == mykey)    
-    DEBUG_T("user3635567709907321599 now is in MemTable%d\n");
-  /////////////meggie
   size_t key_size = key.size();
   size_t val_size = value.size();
   size_t internal_key_size = key_size + 8;

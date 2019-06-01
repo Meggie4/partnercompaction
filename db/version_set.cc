@@ -824,11 +824,10 @@ class VersionSet::Builder {
   struct LevelState {
     std::set<uint64_t> deleted_files;
     FileSet* added_files;
+	///////////meggie
+	std::map<uint64_t, std::vector<Partner>> updated_files;
+	///////////meggie
   };
-
-  ///////////meggie
-  std::vector< std::pair<FileMetaData*, std::vector<Partner>> > updated_fileset;
-  ///////////meggie
 
   VersionSet* vset_;
   Version* base_;
@@ -891,10 +890,6 @@ class VersionSet::Builder {
     for (size_t i = 0; i < edit->new_files_.size(); i++) {
       const int level = edit->new_files_[i].first;
       FileMetaData* f = new FileMetaData(edit->new_files_[i].second);
-      if(f->number == 98)
-          DEBUG_T("new FileMetaData 98\n");
-      if(f->number == 145)
-          DEBUG_T("new FileMetaData 145\n");
       f->refs = 1;
 
       // We arrange to automatically compact this file after
@@ -918,8 +913,15 @@ class VersionSet::Builder {
     }
 
     /////////////meggie
-    updated_fileset.assign(edit->update_files_.begin(), 
-						   edit->update_files_.end());
+	const VersionEdit::UpdatedFileSet upd = edit->updated_files_;
+    for (VersionEdit::UpdatedFileSet::const_iterator iter = upd.begin();
+			iter != upd.end();
+			++iter) {
+		const int level = iter->first;
+		DEBUG_T("update number:%d\n", iter->second.first);
+		levels_[level].updated_files.insert(std::make_pair(iter->second.first,
+														  iter->second.second));
+    }
     /////////////meggie
   }
 
@@ -971,41 +973,49 @@ class VersionSet::Builder {
       }
 #endif
     }
-    //////////////meggie
-    //update files 
-    for(int i = 0; i < updated_fileset.size(); i++) {
-        auto pair = updated_fileset[i];
-        FileMetaData* file = pair.first;
-        if(!file) 
-            DEBUG_T("file is nullptr\n");
-        file->partners.assign(pair.second.begin(), pair.second.end());
-            
-        for(int j =0; j < file->partners.size(); j++){
-            Partner& ptner = file->partners[j];
-            DEBUG_T("get partner, origin SSTable:%d, smallest:%s, largest:%s\n", 
-                    file->number, 
-                    file->smallest.user_key().ToString().c_str(), 
-                    file->largest.user_key().ToString().c_str());
-            DEBUG_T("get partner, partner number:%d, partner_smallest:%s, partner_largest:%s\n",
-                    ptner.partner_number,
-                    ptner.partner_smallest.user_key().ToString().c_str(),
-                    ptner.partner_largest.user_key().ToString().c_str());
-            if(vset_->icmp_.Compare(ptner.partner_largest, file->largest) > 0)
-                file->largest = ptner.partner_largest;
-            if(vset_->icmp_.Compare(ptner.partner_smallest, file->smallest) < 0)
-                file->smallest = ptner.partner_smallest;
-            DEBUG_T("UpdateFile, smallest:%s, largest:%s\n",
-                file->smallest.user_key().ToString().c_str(),
-                file->largest.user_key().ToString().c_str());
-        }
-    }
-      //////////////meggie
   }
 
   void MaybeAddFile(Version* v, int level, FileMetaData* f) {
     if (levels_[level].deleted_files.count(f->number) > 0) {
       // File is deleted: do nothing
-    } else {
+	//////////meggie
+    } else if(levels_[level].updated_files.find(f->number) != 
+			 levels_[level].updated_files.end()) {
+	   std::vector<FileMetaData*>* files = &v->files_[level];
+	   FileMetaData* fm = new FileMetaData(*f);
+	   fm->refs = 1;
+	   std::vector<Partner>& partners = levels_[level].updated_files[f->number];
+	   fm->partners.assign(partners.begin(), partners.end());	   
+	   
+	   for(int j =0; j < fm->partners.size(); j++){
+		   Partner& ptner = fm->partners[j];
+		   DEBUG_T("get partner, origin SSTable:%d, smallest:%s, largest:%s\n", 
+				   fm->number, 
+				   fm->smallest.user_key().ToString().c_str(), 
+				   fm->largest.user_key().ToString().c_str());
+		   DEBUG_T("get partner, partner number:%d, partner_smallest:%s, partner_largest:%s\n",
+				   ptner.partner_number,
+				   ptner.partner_smallest.user_key().ToString().c_str(),
+				   ptner.partner_largest.user_key().ToString().c_str());
+		   if(vset_->icmp_.Compare(ptner.partner_largest, fm->largest) > 0)
+			   fm->largest = ptner.partner_largest;
+		   if(vset_->icmp_.Compare(ptner.partner_smallest, fm->smallest) < 0)
+			   fm->smallest = ptner.partner_smallest;
+		   DEBUG_T("UpdateFile, smallest:%s, largest:%s\n",
+				   fm->smallest.user_key().ToString().c_str(),
+				   fm->largest.user_key().ToString().c_str());
+	   }
+	   fm->allowed_seeks = (fm->file_size / 16384);
+	   if (fm->allowed_seeks < 100) fm->allowed_seeks = 100;
+	   
+	   if (level > 0 && !files->empty()) {
+		   // Must not overlap
+		   assert(vset_->icmp_.Compare((*files)[files->size()-1]->largest,
+									   fm->smallest) < 0);
+	   }
+	   files->push_back(fm);  
+	} else {
+	//////////meggie
       //if(level > 1)
       //   DEBUG_T("MaybeAddFile, smallest:%s, largest:%s\n",
       //        f->smallest.user_key().ToString().c_str(),
@@ -1406,11 +1416,6 @@ const char* VersionSet::LevelSummary(LevelSummaryStorage* scratch) const {
 
 ////////////////////meggie
 ////针对的是victim inputs没有partner的情况, 获取traditional compaction 
-FileMetaData* VersionSet::GetPartnerFileMeta(Compaction* c, int inputs1_index) {
-    const std::vector<FileMetaData*>& files1 = c->inputs_[1];
-    return files1[inputs1_index]; 
-}
-
 void VersionSet::AddInputDeletions(VersionEdit* edit, Compaction* c, 
                                 std::vector<int> tcompaction_index) {
     const std::vector<FileMetaData*>& files0 = c->inputs_[0];

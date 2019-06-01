@@ -308,7 +308,6 @@ class VersionSet {
 							int start_index, int end_index);
   void AddInputDeletions(VersionEdit* edit, Compaction* c, 
                          std::vector<int> tcompaction_index);
-  FileMetaData* GetPartnerFileMeta(Compaction* c, int inputs1_index);
   void TestIterator(Iterator* iter, bool range, InternalKey start, InternalKey end, bool containsend);
   //void TestIterator(Iterator* iter);
   Iterator* GetSingleCompactionIterator(Compaction* c);
