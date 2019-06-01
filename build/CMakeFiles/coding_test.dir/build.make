@@ -43,10 +43,10 @@ RM = /usr/local/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/meggie/文档/leveldb-partnercompaction
+CMAKE_SOURCE_DIR = /home/meggie/文档/partnercompaction
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/meggie/文档/leveldb-partnercompaction/build
+CMAKE_BINARY_DIR = /home/meggie/文档/partnercompaction/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/coding_test.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/coding_test.dir/flags.make
 
 CMakeFiles/coding_test.dir/util/testharness.cc.o: CMakeFiles/coding_test.dir/flags.make
 CMakeFiles/coding_test.dir/util/testharness.cc.o: ../util/testharness.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/meggie/文档/leveldb-partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/coding_test.dir/util/testharness.cc.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coding_test.dir/util/testharness.cc.o -c /home/meggie/文档/leveldb-partnercompaction/util/testharness.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/meggie/文档/partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/coding_test.dir/util/testharness.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coding_test.dir/util/testharness.cc.o -c /home/meggie/文档/partnercompaction/util/testharness.cc
 
 CMakeFiles/coding_test.dir/util/testharness.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coding_test.dir/util/testharness.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/meggie/文档/leveldb-partnercompaction/util/testharness.cc > CMakeFiles/coding_test.dir/util/testharness.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/meggie/文档/partnercompaction/util/testharness.cc > CMakeFiles/coding_test.dir/util/testharness.cc.i
 
 CMakeFiles/coding_test.dir/util/testharness.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coding_test.dir/util/testharness.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/meggie/文档/leveldb-partnercompaction/util/testharness.cc -o CMakeFiles/coding_test.dir/util/testharness.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/meggie/文档/partnercompaction/util/testharness.cc -o CMakeFiles/coding_test.dir/util/testharness.cc.s
 
 CMakeFiles/coding_test.dir/util/testharness.cc.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/coding_test.dir/util/testharness.cc.o.provides.build: CMakeFiles/codi
 
 CMakeFiles/coding_test.dir/util/testutil.cc.o: CMakeFiles/coding_test.dir/flags.make
 CMakeFiles/coding_test.dir/util/testutil.cc.o: ../util/testutil.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/meggie/文档/leveldb-partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/coding_test.dir/util/testutil.cc.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coding_test.dir/util/testutil.cc.o -c /home/meggie/文档/leveldb-partnercompaction/util/testutil.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/meggie/文档/partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/coding_test.dir/util/testutil.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coding_test.dir/util/testutil.cc.o -c /home/meggie/文档/partnercompaction/util/testutil.cc
 
 CMakeFiles/coding_test.dir/util/testutil.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coding_test.dir/util/testutil.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/meggie/文档/leveldb-partnercompaction/util/testutil.cc > CMakeFiles/coding_test.dir/util/testutil.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/meggie/文档/partnercompaction/util/testutil.cc > CMakeFiles/coding_test.dir/util/testutil.cc.i
 
 CMakeFiles/coding_test.dir/util/testutil.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coding_test.dir/util/testutil.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/meggie/文档/leveldb-partnercompaction/util/testutil.cc -o CMakeFiles/coding_test.dir/util/testutil.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/meggie/文档/partnercompaction/util/testutil.cc -o CMakeFiles/coding_test.dir/util/testutil.cc.s
 
 CMakeFiles/coding_test.dir/util/testutil.cc.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/coding_test.dir/util/testutil.cc.o.provides.build: CMakeFiles/coding_
 
 CMakeFiles/coding_test.dir/util/coding_test.cc.o: CMakeFiles/coding_test.dir/flags.make
 CMakeFiles/coding_test.dir/util/coding_test.cc.o: ../util/coding_test.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/meggie/文档/leveldb-partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/coding_test.dir/util/coding_test.cc.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coding_test.dir/util/coding_test.cc.o -c /home/meggie/文档/leveldb-partnercompaction/util/coding_test.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/meggie/文档/partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/coding_test.dir/util/coding_test.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/coding_test.dir/util/coding_test.cc.o -c /home/meggie/文档/partnercompaction/util/coding_test.cc
 
 CMakeFiles/coding_test.dir/util/coding_test.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/coding_test.dir/util/coding_test.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/meggie/文档/leveldb-partnercompaction/util/coding_test.cc > CMakeFiles/coding_test.dir/util/coding_test.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/meggie/文档/partnercompaction/util/coding_test.cc > CMakeFiles/coding_test.dir/util/coding_test.cc.i
 
 CMakeFiles/coding_test.dir/util/coding_test.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/coding_test.dir/util/coding_test.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/meggie/文档/leveldb-partnercompaction/util/coding_test.cc -o CMakeFiles/coding_test.dir/util/coding_test.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/meggie/文档/partnercompaction/util/coding_test.cc -o CMakeFiles/coding_test.dir/util/coding_test.cc.s
 
 CMakeFiles/coding_test.dir/util/coding_test.cc.o.requires:
 
@@ -144,7 +144,7 @@ coding_test: CMakeFiles/coding_test.dir/util/coding_test.cc.o
 coding_test: CMakeFiles/coding_test.dir/build.make
 coding_test: libleveldb.a
 coding_test: CMakeFiles/coding_test.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/meggie/文档/leveldb-partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable coding_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/meggie/文档/partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable coding_test"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/coding_test.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -163,6 +163,6 @@ CMakeFiles/coding_test.dir/clean:
 .PHONY : CMakeFiles/coding_test.dir/clean
 
 CMakeFiles/coding_test.dir/depend:
-	cd /home/meggie/文档/leveldb-partnercompaction/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/meggie/文档/leveldb-partnercompaction /home/meggie/文档/leveldb-partnercompaction /home/meggie/文档/leveldb-partnercompaction/build /home/meggie/文档/leveldb-partnercompaction/build /home/meggie/文档/leveldb-partnercompaction/build/CMakeFiles/coding_test.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/meggie/文档/partnercompaction/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/meggie/文档/partnercompaction /home/meggie/文档/partnercompaction /home/meggie/文档/partnercompaction/build /home/meggie/文档/partnercompaction/build /home/meggie/文档/partnercompaction/build/CMakeFiles/coding_test.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/coding_test.dir/depend
 

@@ -72,7 +72,7 @@ leveldb/export.h
 leveldb/slice.h
 ../include/leveldb/leveldb/slice.h
 
-/home/meggie/文档/leveldb-partnercompaction/util/no_destructor_test.cc
+/home/meggie/文档/partnercompaction/util/no_destructor_test.cc
 cstdint
 -
 cstdlib
@@ -80,13 +80,13 @@ cstdlib
 utility
 -
 util/no_destructor.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/no_destructor.h
+/home/meggie/文档/partnercompaction/util/util/no_destructor.h
 util/testharness.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/testharness.h
+/home/meggie/文档/partnercompaction/util/util/testharness.h
 
-/home/meggie/文档/leveldb-partnercompaction/util/testharness.cc
+/home/meggie/文档/partnercompaction/util/testharness.cc
 util/testharness.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/testharness.h
+/home/meggie/文档/partnercompaction/util/util/testharness.h
 stdlib.h
 -
 sys/stat.h
@@ -98,11 +98,11 @@ string
 vector
 -
 leveldb/env.h
-/home/meggie/文档/leveldb-partnercompaction/util/leveldb/env.h
+/home/meggie/文档/partnercompaction/util/leveldb/env.h
 
-/home/meggie/文档/leveldb-partnercompaction/util/testutil.cc
+/home/meggie/文档/partnercompaction/util/testutil.cc
 util/testutil.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/testutil.h
+/home/meggie/文档/partnercompaction/util/util/testutil.h
 util/random.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/random.h
+/home/meggie/文档/partnercompaction/util/util/random.h
 

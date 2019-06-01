@@ -54,13 +54,13 @@ leveldb/export.h
 leveldb/slice.h
 ../include/leveldb/leveldb/slice.h
 
-/home/meggie/文档/leveldb-partnercompaction/db/leveldbutil.cc
+/home/meggie/文档/partnercompaction/db/leveldbutil.cc
 stdio.h
 -
 leveldb/dumpfile.h
-/home/meggie/文档/leveldb-partnercompaction/db/leveldb/dumpfile.h
+/home/meggie/文档/partnercompaction/db/leveldb/dumpfile.h
 leveldb/env.h
-/home/meggie/文档/leveldb-partnercompaction/db/leveldb/env.h
+/home/meggie/文档/partnercompaction/db/leveldb/env.h
 leveldb/status.h
-/home/meggie/文档/leveldb-partnercompaction/db/leveldb/status.h
+/home/meggie/文档/partnercompaction/db/leveldb/status.h
 

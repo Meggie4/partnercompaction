@@ -100,7 +100,7 @@ leveldb/export.h
 leveldb/status.h
 ../include/leveldb/leveldb/status.h
 
-/home/meggie/文档/leveldb-partnercompaction/issues/issue178_test.cc
+/home/meggie/文档/partnercompaction/issues/issue178_test.cc
 iostream
 -
 sstream
@@ -108,15 +108,15 @@ sstream
 cstdlib
 -
 leveldb/db.h
-/home/meggie/文档/leveldb-partnercompaction/issues/leveldb/db.h
+/home/meggie/文档/partnercompaction/issues/leveldb/db.h
 leveldb/write_batch.h
-/home/meggie/文档/leveldb-partnercompaction/issues/leveldb/write_batch.h
+/home/meggie/文档/partnercompaction/issues/leveldb/write_batch.h
 util/testharness.h
-/home/meggie/文档/leveldb-partnercompaction/issues/util/testharness.h
+/home/meggie/文档/partnercompaction/issues/util/testharness.h
 
-/home/meggie/文档/leveldb-partnercompaction/util/testharness.cc
+/home/meggie/文档/partnercompaction/util/testharness.cc
 util/testharness.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/testharness.h
+/home/meggie/文档/partnercompaction/util/util/testharness.h
 stdlib.h
 -
 sys/stat.h
@@ -128,11 +128,11 @@ string
 vector
 -
 leveldb/env.h
-/home/meggie/文档/leveldb-partnercompaction/util/leveldb/env.h
+/home/meggie/文档/partnercompaction/util/leveldb/env.h
 
-/home/meggie/文档/leveldb-partnercompaction/util/testutil.cc
+/home/meggie/文档/partnercompaction/util/testutil.cc
 util/testutil.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/testutil.h
+/home/meggie/文档/partnercompaction/util/util/testutil.h
 util/random.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/random.h
+/home/meggie/文档/partnercompaction/util/util/random.h
 

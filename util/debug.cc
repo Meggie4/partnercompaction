@@ -13,7 +13,7 @@
 #include <inttypes.h>
 #include <pthread.h>
 
-#define DEBUG
+//#define DEBUG
 
 //Trouble shooting debug
 //use only if trouble shooting
@@ -22,7 +22,7 @@ void DEBUG_T(const char* format, ... ) {
 #ifdef DEBUG
         va_list args;
         va_start( args, format );
-		FILE *m_file = fopen("/home/meggie/文档/leveldb-partnercompaction/mylog.txt", "a+b");
+		FILE *m_file = fopen("/home/meggie/文档/partnercompaction/mylog.txt", "a+b");
         vfprintf(m_file, format, args );
         fclose(m_file);
         //vfprintf(stderr, format, args );

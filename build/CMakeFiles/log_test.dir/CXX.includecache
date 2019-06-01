@@ -150,25 +150,25 @@ leveldb/export.h
 leveldb/slice.h
 ../include/leveldb/leveldb/slice.h
 
-/home/meggie/文档/leveldb-partnercompaction/db/log_test.cc
+/home/meggie/文档/partnercompaction/db/log_test.cc
 db/log_reader.h
-/home/meggie/文档/leveldb-partnercompaction/db/db/log_reader.h
+/home/meggie/文档/partnercompaction/db/db/log_reader.h
 db/log_writer.h
-/home/meggie/文档/leveldb-partnercompaction/db/db/log_writer.h
+/home/meggie/文档/partnercompaction/db/db/log_writer.h
 leveldb/env.h
-/home/meggie/文档/leveldb-partnercompaction/db/leveldb/env.h
+/home/meggie/文档/partnercompaction/db/leveldb/env.h
 util/coding.h
-/home/meggie/文档/leveldb-partnercompaction/db/util/coding.h
+/home/meggie/文档/partnercompaction/db/util/coding.h
 util/crc32c.h
-/home/meggie/文档/leveldb-partnercompaction/db/util/crc32c.h
+/home/meggie/文档/partnercompaction/db/util/crc32c.h
 util/random.h
-/home/meggie/文档/leveldb-partnercompaction/db/util/random.h
+/home/meggie/文档/partnercompaction/db/util/random.h
 util/testharness.h
-/home/meggie/文档/leveldb-partnercompaction/db/util/testharness.h
+/home/meggie/文档/partnercompaction/db/util/testharness.h
 
-/home/meggie/文档/leveldb-partnercompaction/util/testharness.cc
+/home/meggie/文档/partnercompaction/util/testharness.cc
 util/testharness.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/testharness.h
+/home/meggie/文档/partnercompaction/util/util/testharness.h
 stdlib.h
 -
 sys/stat.h
@@ -180,13 +180,13 @@ string
 vector
 -
 leveldb/env.h
-/home/meggie/文档/leveldb-partnercompaction/util/leveldb/env.h
+/home/meggie/文档/partnercompaction/util/leveldb/env.h
 
-/home/meggie/文档/leveldb-partnercompaction/util/testutil.cc
+/home/meggie/文档/partnercompaction/util/testutil.cc
 util/testutil.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/testutil.h
+/home/meggie/文档/partnercompaction/util/util/testutil.h
 util/random.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/random.h
+/home/meggie/文档/partnercompaction/util/util/random.h
 
 include/port/port_config.h
 

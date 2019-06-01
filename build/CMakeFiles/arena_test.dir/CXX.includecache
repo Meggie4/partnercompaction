@@ -122,17 +122,17 @@ leveldb/export.h
 leveldb/slice.h
 ../include/leveldb/leveldb/slice.h
 
-/home/meggie/文档/leveldb-partnercompaction/util/arena_test.cc
+/home/meggie/文档/partnercompaction/util/arena_test.cc
 util/arena.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/arena.h
+/home/meggie/文档/partnercompaction/util/util/arena.h
 util/random.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/random.h
+/home/meggie/文档/partnercompaction/util/util/random.h
 util/testharness.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/testharness.h
+/home/meggie/文档/partnercompaction/util/util/testharness.h
 
-/home/meggie/文档/leveldb-partnercompaction/util/testharness.cc
+/home/meggie/文档/partnercompaction/util/testharness.cc
 util/testharness.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/testharness.h
+/home/meggie/文档/partnercompaction/util/util/testharness.h
 stdlib.h
 -
 sys/stat.h
@@ -144,13 +144,13 @@ string
 vector
 -
 leveldb/env.h
-/home/meggie/文档/leveldb-partnercompaction/util/leveldb/env.h
+/home/meggie/文档/partnercompaction/util/leveldb/env.h
 
-/home/meggie/文档/leveldb-partnercompaction/util/testutil.cc
+/home/meggie/文档/partnercompaction/util/testutil.cc
 util/testutil.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/testutil.h
+/home/meggie/文档/partnercompaction/util/util/testutil.h
 util/random.h
-/home/meggie/文档/leveldb-partnercompaction/util/util/random.h
+/home/meggie/文档/partnercompaction/util/util/random.h
 
 include/port/port_config.h
 

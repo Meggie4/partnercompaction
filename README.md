@@ -1,1 +1,1 @@
-leveldb-partnercompaction
+partnercompaction

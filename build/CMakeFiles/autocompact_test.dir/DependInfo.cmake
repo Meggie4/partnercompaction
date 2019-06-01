@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/meggie/文档/leveldb-partnercompaction/db/autocompact_test.cc" "/home/meggie/文档/leveldb-partnercompaction/build/CMakeFiles/autocompact_test.dir/db/autocompact_test.cc.o"
-  "/home/meggie/文档/leveldb-partnercompaction/util/testharness.cc" "/home/meggie/文档/leveldb-partnercompaction/build/CMakeFiles/autocompact_test.dir/util/testharness.cc.o"
-  "/home/meggie/文档/leveldb-partnercompaction/util/testutil.cc" "/home/meggie/文档/leveldb-partnercompaction/build/CMakeFiles/autocompact_test.dir/util/testutil.cc.o"
+  "/home/meggie/文档/partnercompaction/db/autocompact_test.cc" "/home/meggie/文档/partnercompaction/build/CMakeFiles/autocompact_test.dir/db/autocompact_test.cc.o"
+  "/home/meggie/文档/partnercompaction/util/testharness.cc" "/home/meggie/文档/partnercompaction/build/CMakeFiles/autocompact_test.dir/util/testharness.cc.o"
+  "/home/meggie/文档/partnercompaction/util/testutil.cc" "/home/meggie/文档/partnercompaction/build/CMakeFiles/autocompact_test.dir/util/testutil.cc.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -24,7 +24,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/meggie/文档/leveldb-partnercompaction/build/CMakeFiles/leveldb.dir/DependInfo.cmake"
+  "/home/meggie/文档/partnercompaction/build/CMakeFiles/leveldb.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

@@ -18,9 +18,9 @@ leveldb/export.h
 
 ../include/leveldb/export.h
 
-/home/meggie/文档/leveldb-partnercompaction/db/c_test.c
+/home/meggie/文档/partnercompaction/db/c_test.c
 leveldb/c.h
-/home/meggie/文档/leveldb-partnercompaction/db/leveldb/c.h
+/home/meggie/文档/partnercompaction/db/leveldb/c.h
 stddef.h
 -
 stdio.h

@@ -6,14 +6,14 @@ CMakeFiles/status_test.dir/util/status_test.cc.o
  ../include/leveldb/export.h
  ../include/leveldb/slice.h
  ../include/leveldb/status.h
- /home/meggie/文档/leveldb-partnercompaction/util/status_test.cc
+ /home/meggie/文档/partnercompaction/util/status_test.cc
 CMakeFiles/status_test.dir/util/testharness.cc.o
  ..//util/testharness.h
  ../include/leveldb/env.h
  ../include/leveldb/export.h
  ../include/leveldb/slice.h
  ../include/leveldb/status.h
- /home/meggie/文档/leveldb-partnercompaction/util/testharness.cc
+ /home/meggie/文档/partnercompaction/util/testharness.cc
 CMakeFiles/status_test.dir/util/testutil.cc.o
  ..//util/random.h
  ..//util/testutil.h
@@ -21,4 +21,4 @@ CMakeFiles/status_test.dir/util/testutil.cc.o
  ../include/leveldb/export.h
  ../include/leveldb/slice.h
  ../include/leveldb/status.h
- /home/meggie/文档/leveldb-partnercompaction/util/testutil.cc
+ /home/meggie/文档/partnercompaction/util/testutil.cc

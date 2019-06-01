@@ -1,4 +1,4 @@
-# Install script for directory: /home/meggie/文档/leveldb-partnercompaction
+# Install script for directory: /home/meggie/文档/partnercompaction
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -33,26 +33,26 @@ if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 endif()
 
 if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/home/meggie/文档/leveldb-partnercompaction/build/libleveldb.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/home/meggie/文档/partnercompaction/build/libleveldb.a")
 endif()
 
 if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/leveldb" TYPE FILE FILES
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/c.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/cache.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/comparator.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/db.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/dumpfile.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/env.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/export.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/filter_policy.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/iterator.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/options.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/slice.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/status.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/table_builder.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/table.h"
-    "/home/meggie/文档/leveldb-partnercompaction/include/leveldb/write_batch.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/c.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/cache.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/comparator.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/db.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/dumpfile.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/env.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/export.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/filter_policy.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/iterator.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/options.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/slice.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/status.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/table_builder.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/table.h"
+    "/home/meggie/文档/partnercompaction/include/leveldb/write_batch.h"
     )
 endif()
 
@@ -60,7 +60,7 @@ if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMP
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/leveldb/leveldbTargets.cmake")
     file(DIFFERENT EXPORT_FILE_CHANGED FILES
          "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/leveldb/leveldbTargets.cmake"
-         "/home/meggie/文档/leveldb-partnercompaction/build/CMakeFiles/Export/lib/cmake/leveldb/leveldbTargets.cmake")
+         "/home/meggie/文档/partnercompaction/build/CMakeFiles/Export/lib/cmake/leveldb/leveldbTargets.cmake")
     if(EXPORT_FILE_CHANGED)
       file(GLOB OLD_CONFIG_FILES "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/leveldb/leveldbTargets-*.cmake")
       if(OLD_CONFIG_FILES)
@@ -69,16 +69,16 @@ if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMP
       endif()
     endif()
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/leveldb" TYPE FILE FILES "/home/meggie/文档/leveldb-partnercompaction/build/CMakeFiles/Export/lib/cmake/leveldb/leveldbTargets.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/leveldb" TYPE FILE FILES "/home/meggie/文档/partnercompaction/build/CMakeFiles/Export/lib/cmake/leveldb/leveldbTargets.cmake")
   if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^()$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/leveldb" TYPE FILE FILES "/home/meggie/文档/leveldb-partnercompaction/build/CMakeFiles/Export/lib/cmake/leveldb/leveldbTargets-noconfig.cmake")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/leveldb" TYPE FILE FILES "/home/meggie/文档/partnercompaction/build/CMakeFiles/Export/lib/cmake/leveldb/leveldbTargets-noconfig.cmake")
   endif()
 endif()
 
 if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/leveldb" TYPE FILE FILES
-    "/home/meggie/文档/leveldb-partnercompaction/cmake/leveldbConfig.cmake"
-    "/home/meggie/文档/leveldb-partnercompaction/build/leveldbConfigVersion.cmake"
+    "/home/meggie/文档/partnercompaction/cmake/leveldbConfig.cmake"
+    "/home/meggie/文档/partnercompaction/build/leveldbConfigVersion.cmake"
     )
 endif()
 
@@ -90,5 +90,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/meggie/文档/leveldb-partnercompaction/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/meggie/文档/partnercompaction/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
