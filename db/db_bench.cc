@@ -29,6 +29,11 @@
 
 #include "util/debug.h"
 
+///////////meggie
+extern int use_origin_victim_num;
+extern int partner_compaction_num;
+///////////meggie
+
 // Comma-separated list of operations to run in the specified order
 //   Actual benchmarks:
 //      fillseq       -- write N values in sequential key order in async mode
@@ -73,7 +78,7 @@ static const char* FLAGS_benchmarks =
     ;*/
 
 // Number of key/values to place in database
-static int FLAGS_num = 20000000;
+static int FLAGS_num = 30000000;
 
 // Number of read operations to do.  If negative, do FLAGS_num reads.
 static int FLAGS_reads = -1;
@@ -828,6 +833,8 @@ class Benchmark {
       }
       ////////////meggie
       db_->PrintTimerAudit();
+      DEBUG_T("use_origin_victim_num:%d, partner_compaction_num:%d\n", 
+              use_origin_victim_num, partner_compaction_num);
       ////////////meggie
     }
   }
