@@ -142,7 +142,8 @@ class DBImpl : public DB {
   bool ValidAndInRange(Iterator* iter, InternalKey end, 
                 bool containsend, ParsedInternalKey* ikey_victim);
   void UpdateFileWithPartnerCompaction(VersionEdit* edit,
-            std::vector<uint64_t>& pcompaction_files, 
+            Compaction* c,
+            std::vector<SplitCompaction*>& pcompaction_files, 
             std::vector<CompactionState*>& p_compactionstate_list);
   Status DealWithSingleCompaction(CompactionState* compact);
   ///////////////meggie

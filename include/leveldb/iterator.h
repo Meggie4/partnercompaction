@@ -75,6 +75,7 @@ class LEVELDB_EXPORT Iterator {
   //////////////meggie
   virtual void SetChildRange(int index, Slice start, 
           Slice end, bool containsend) {}
+  virtual void SetRange(Slice start, Slice end) {}
   //////////////meggie
   
   // Clients are allowed to register function/arg1/arg2 triples that

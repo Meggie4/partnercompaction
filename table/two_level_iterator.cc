@@ -9,6 +9,11 @@
 #include "table/format.h"
 #include "table/iterator_wrapper.h"
 
+///////////meggie
+#include "leveldb/comparator.h"
+#include "db/dbformat.h"
+///////////meggie
+
 namespace leveldb {
 
 namespace {
@@ -32,7 +37,13 @@ class TwoLevelIterator: public Iterator {
   virtual void Prev();
 
   virtual bool Valid() const {
-    return data_iter_.Valid();
+    ///////////////meggie
+    if(set_range_){
+        return Range_iter_valid();
+    }
+    ///////////////meggie
+    else 
+        return data_iter_.Valid();
   }
   virtual Slice key() const {
     assert(Valid());
@@ -53,6 +64,14 @@ class TwoLevelIterator: public Iterator {
     }
   }
 
+  //////////////////meggie
+  virtual void SetRange(Slice start, Slice end) {
+    set_range_ = true;
+    range_start_ = start;
+    range_end_ = end;
+    comparator_ = new InternalKeyComparator(BytewiseComparator());
+  }
+  //////////////////meggie
  private:
   void SaveError(const Status& s) {
     if (status_.ok() && !s.ok()) status_ = s;
@@ -71,6 +90,14 @@ class TwoLevelIterator: public Iterator {
   // If data_iter_ is non-null, then "data_block_handle_" holds the
   // "index_value" passed to block_function_ to create the data_iter_.
   std::string data_block_handle_;
+
+  ////////////////meggie
+  bool set_range_;
+  Slice range_start_;
+  Slice range_end_;
+  InternalKeyComparator* comparator_;
+  bool Range_iter_valid() const;
+  ////////////////meggie
 };
 
 TwoLevelIterator::TwoLevelIterator(
@@ -82,12 +109,32 @@ TwoLevelIterator::TwoLevelIterator(
       arg_(arg),
       options_(options),
       index_iter_(index_iter),
+      /////////////meggie
+      set_range_(false),
+      comparator_(nullptr),
+      /////////////meggie
       data_iter_(nullptr) 
     {
 }
 
 TwoLevelIterator::~TwoLevelIterator() {
+    ////////////////meggie
+    if(comparator_ != nullptr)
+        delete comparator_;
+    ////////////////meggie
 }
+
+/////////////////meggie
+bool TwoLevelIterator::Range_iter_valid() const {
+    if(!data_iter_.Valid())
+        return false;
+    Slice key = data_iter_.key();
+    if(comparator_->Compare(key, range_end_) <= 0)
+        return true;
+    else 
+        return false;
+}
+/////////////////meggie
 
 void TwoLevelIterator::Seek(const Slice& target) {
   index_iter_.Seek(target);
@@ -97,6 +144,12 @@ void TwoLevelIterator::Seek(const Slice& target) {
 }
 
 void TwoLevelIterator::SeekToFirst() {
+  ///////////////meggie
+  if(set_range_){
+      Seek(range_start_);
+      return;
+  }
+  ///////////////meggie
   index_iter_.SeekToFirst();
   InitDataBlock();
   if (data_iter_.iter() != nullptr) data_iter_.SeekToFirst();

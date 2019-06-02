@@ -58,6 +58,11 @@ class LEVELDB_EXPORT Table {
   // E.g., the approximate offset of the last key in the table will
   // be close to the file length.
   uint64_t ApproximateOffsetOf(const Slice& key) const;
+  ////////////////////meggie
+  const Slice GreaterAndEqual(const Slice& key) const;
+  const Slice LessAndEqual(const Slice& key) const; 
+  const Slice LessThan(const Slice& key) const;
+  ////////////////////meggie
 
  private:
   struct Rep;

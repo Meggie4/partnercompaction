@@ -995,26 +995,70 @@ void DBImpl::AddFileWithTraditionalCompaction(VersionEdit* edit,
 }
 
 void DBImpl::UpdateFileWithPartnerCompaction(VersionEdit* edit,
-        std::vector<uint64_t>& pcompaction_files, 
+        Compaction* c,
+        std::vector<SplitCompaction*>& p_sptcompactions, 
         std::vector<CompactionState*>& p_compactionstate_list) {
-   int sz1 = pcompaction_files.size();
+   int sz1 = p_sptcompactions.size();
    int sz2 = p_compactionstate_list.size();
    assert(sz1 == sz2);
    DEBUG_T("UpdateFileWithPartnerCompaction, size:%d\n", sz1);
+   int level = c->level();
+   int number;
+
    for(int i = 0; i < sz1; i++) {
+       SplitCompaction* p_sptcompaction = p_sptcompactions[i];
        CompactionState* compact = p_compactionstate_list[i];
        std::vector<Partner> partners;
-	   int level = compact->compaction->level();
-       for(size_t j = 0; j < compact->outputs.size(); j++) {
-          const CompactionState::Output& out = compact->outputs[j];
-          Partner ptner; 
-          ptner.partner_number = out.number;
-          ptner.partner_size = out.file_size;
-          ptner.partner_smallest = out.smallest;
-          ptner.partner_largest = out.largest;
-          partners.push_back(ptner);
+       number = c->input(1, p_sptcompaction->inputs1_index)->number;
+       if(compact == nullptr) {
+           std::vector<int>& victims = p_sptcompaction->victims;
+           for(int j = 0; j < victims.size(); j++) {
+              FileMetaData* fm = c->input(0, victims[j]);
+              Partner ptner;
+              ptner.partner_number = fm->number;
+              ptner.partner_size = fm->file_size;
+              Table* tableptr;
+              Iterator* iter = table_cache_->NewIterator(ReadOptions(),
+                      fm->number, fm->file_size, &tableptr);
+              
+              if(j == 0){
+                  Slice smallest = tableptr->GreaterAndEqual(
+                          p_sptcompaction->victim_start.Encode());
+                  InternalKey ismallest;
+                  ismallest.DecodeFrom(smallest);
+                  ptner.partner_smallest = ismallest;
+              } else 
+                  ptner.partner_smallest = fm->smallest;
+              
+              if(j == (victims.size() - 1)) {
+                  Slice largest;
+                  if(p_sptcompaction->containsend) 
+                      largest = tableptr->LessAndEqual(
+                            p_sptcompaction->victim_end.Encode());
+                  else 
+                      largest = tableptr->LessThan(
+                            p_sptcompaction->victim_end.Encode());
+                  InternalKey ilargest;
+                  ilargest.DecodeFrom(largest);
+                  ptner.partner_largest = ilargest;
+              } else 
+                  ptner.partner_largest = fm->largest;
+              
+              partners.push_back(ptner);
+              delete iter;
+           }
+       } else {
+           for(size_t j = 0; j < compact->outputs.size(); j++) {
+              const CompactionState::Output& out = compact->outputs[j];
+              Partner ptner; 
+              ptner.partner_number = out.number;
+              ptner.partner_size = out.file_size;
+              ptner.partner_smallest = out.smallest;
+              ptner.partner_largest = out.largest;
+              partners.push_back(ptner);
+           }
        }
-       edit->UpdateFile(level + 1, pcompaction_files[i], partners);
+       edit->UpdateFile(level + 1, number, partners);
    }
 }
 
@@ -1356,7 +1400,6 @@ Status DBImpl::DoSplitCompactionWork(Compaction* c) {
     std::vector<CompactionState*> t_compactionstate_list;
     std::vector<CompactionState*> p_compactionstate_list;
     std::vector<int> tcompaction_index;
-    std::vector<uint64_t> pcompaction_files;
     
     SequenceNumber smallest_snapshot;
     if (snapshots_.empty()) {
@@ -1408,17 +1451,26 @@ Status DBImpl::DoSplitCompactionWork(Compaction* c) {
 	DEBUG_T("----------partner compaction, has:----------\n");
 	if(p_sptcompactions.size() > 0) {
         for(int i = 0; i < p_sptcompactions.size(); i++) {
-		   FileMetaData* fm = c->input(1, p_sptcompactions[i]->inputs1_index);
-		   int number = fm->number;
-           pcompaction_files.push_back(number);
            DEBUG_T("%d, ", p_sptcompactions[i]->inputs1_index);
-		   PartnerCompactionArgs* pcargs = new PartnerCompactionArgs;
-		   pcargs->db = this;
-		   pcargs->compact = new CompactionState(c);
-           pcargs->compact->smallest_snapshot = smallest_snapshot;
-           p_compactionstate_list.push_back(pcargs->compact);
-		   pcargs->p_sptcompaction = p_sptcompactions[i];
-           thpool_->AddJob(DoPartnerCompactionWork,	pcargs);
+           std::vector<int>& victims = p_sptcompactions[i]->victims;
+           bool use_origin_victim = true;
+           for(int i = 0; i < victims.size(); i++) {
+             if(c->input(0, victims[i])->partners.size() !=  0)
+                use_origin_victim = false;
+           }
+           if(use_origin_victim) {
+               DEBUG_T("use_origin_victim\n");
+               p_compactionstate_list.push_back(nullptr);
+           } else {
+               DEBUG_T("not use_origin_victim\n");
+               PartnerCompactionArgs* pcargs = new PartnerCompactionArgs;
+               pcargs->db = this;
+               pcargs->compact = new CompactionState(c);
+               pcargs->compact->smallest_snapshot = smallest_snapshot;
+               p_compactionstate_list.push_back(pcargs->compact);
+               pcargs->p_sptcompaction = p_sptcompactions[i];
+               thpool_->AddJob(DoPartnerCompactionWork,	pcargs);
+           }
         }
     }
     thpool_->WaitAll();
@@ -1430,7 +1482,7 @@ Status DBImpl::DoSplitCompactionWork(Compaction* c) {
     VersionEdit edit;
     versions_->AddInputDeletions(&edit, c, tcompaction_index);
     AddFileWithTraditionalCompaction(&edit, t_compactionstate_list);
-    UpdateFileWithPartnerCompaction(&edit, pcompaction_files, 
+    UpdateFileWithPartnerCompaction(&edit, c, p_sptcompactions, 
                                             p_compactionstate_list);
     DEBUG_T("-------------finish delete and add-----------\n\n");
 
@@ -1445,7 +1497,8 @@ Status DBImpl::DoSplitCompactionWork(Compaction* c) {
 
 	for(int i = 0; i < p_sptcompactions.size(); i++) {
 		delete p_sptcompactions[i];
-        CleanupCompaction(p_compactionstate_list[i]);
+        if(p_compactionstate_list[i] != nullptr)
+            CleanupCompaction(p_compactionstate_list[i]);
     }
 
     DEBUG_T("-------------finish DoSplitCompactionWork-----------\n\n");

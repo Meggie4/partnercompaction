@@ -344,9 +344,12 @@ static Iterator* GetFileIteratorWithPartner(void* arg,
 		Iterator** list = new Iterator*[sz];
 		list[0] = cache->NewIterator(options, file->number, file->file_size);
 		for(int i = 0; i < sz - 1; i++) {
-			list[i + 1] = cache->NewIterator(options,
+            Iterator* iter = cache->NewIterator(options,
 								  file->partners[i].partner_number,
 								  file->partners[i].partner_size);
+            iter->SetRange(file->partners[i].partner_smallest.Encode(), 
+                           file->partners[i].partner_largest.Encode());
+			list[i + 1] = iter;
 		}
 		return NewMergingIterator(&global_icmp, list, sz);
 	}
@@ -1550,31 +1553,6 @@ void VersionSet::MergeTSplitCompaction(Compaction* c,
             //       t_sptcompaction->victim_end, 
             //       t_sptcompaction->containsend);
 		    //TestIterator(victim_iter);
-
-            /*
-            Iterator* list[2];
-            list[0] = victim_iter;
-            list[1] = inputs1_iter;
-            Iterator* merge_iter = NewMergingIterator(&icmp_,
-                    list, 2);
-            merge_iter->SetChildRange(0, 
-                    t_sptcompaction->victim_start.Encode(),
-                    t_sptcompaction->victim_end.Encode(), 
-                    t_sptcompaction->containsend);
-
-            DEBUG_T("print merge iter:\n");
-            merge_iter->SeekToFirst();
-            for(; merge_iter->Valid(); merge_iter->Next()) {
-                Slice key = merge_iter->key();
-                ParsedInternalKey ikey;
-                ParseInternalKey(key, &ikey);
-                Slice user_key = ikey.user_key;
-                DEBUG_T("user_key:%s\n", user_key.ToString().c_str());
-            }
-            DEBUG_T("print merge iter end\n");
-            */
-            //delete merge_iter;
-            //DEBUG_T("after delete merge_iter\n");
 
             t_sptcompaction->victim_iter = victim_iter;
 			t_sptcompaction->inputs1_iter = inputs1_iter;

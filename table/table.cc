@@ -15,6 +15,11 @@
 #include "table/two_level_iterator.h"
 #include "util/coding.h"
 
+/////////////meggie
+#include "util/debug.h"
+#include "db/dbformat.h"
+/////////////meggie
+
 namespace leveldb {
 
 struct Table::Rep {
@@ -276,5 +281,66 @@ uint64_t Table::ApproximateOffsetOf(const Slice& key) const {
   delete index_iter;
   return result;
 }
+
+/////////////////////meggie
+const Slice Table::GreaterAndEqual(const Slice& key) const {
+    Iterator* iter = NewIterator(ReadOptions());
+    iter->Seek(key);
+    Slice result;
+    if(iter->Valid()){
+        result = iter->key();
+    } else {
+        DEBUG_T("GreaterAndEqual failed\n");
+    }
+    delete iter;
+    return result;
+}
+
+const Slice Table::LessAndEqual(const Slice& key) const {
+    Iterator* iter = NewIterator(ReadOptions());
+    Slice result;
+    iter->Seek(key);
+    const Comparator* user_comparator = BytewiseComparator();
+    if(iter->Valid()){
+        Slice tmpkey = iter->key();
+        ParsedInternalKey tmpikey, ikey;
+        ParseInternalKey(tmpkey, &tmpikey);
+        ParseInternalKey(key, &ikey);
+        if(user_comparator->Compare(tmpikey.user_key, ikey.user_key) == 0)
+            result = tmpkey;
+        else {
+            iter->Prev();
+            if(iter->Valid()){
+                result = iter->key();
+            }
+        }
+        
+    } else {
+        iter->SeekToLast();
+        if(iter->Valid())
+            result = iter->key();
+    }
+
+    delete iter;
+    return result;
+}
+
+const Slice Table::LessThan(const Slice& key) const {
+    Iterator* iter = NewIterator(ReadOptions());
+    Slice result;
+    iter->Seek(key);
+    if(iter->Valid()) {
+        iter->Prev();
+        if(iter->Valid())
+            result = iter->key();
+    } else {
+        iter->SeekToLast();
+        if(iter->Valid())
+            result = iter->key();
+    }
+    delete iter;
+    return result;
+}
+/////////////////////meggie
 
 }  // namespace leveldb

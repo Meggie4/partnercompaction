@@ -949,6 +949,10 @@ table/two_level_iterator.h
 /home/meggie/文档/partnercompaction/table/table/two_level_iterator.h
 util/coding.h
 /home/meggie/文档/partnercompaction/table/util/coding.h
+util/debug.h
+/home/meggie/文档/partnercompaction/table/util/debug.h
+db/dbformat.h
+/home/meggie/文档/partnercompaction/table/db/dbformat.h
 
 /home/meggie/文档/partnercompaction/table/table_builder.cc
 leveldb/table_builder.h
@@ -991,6 +995,10 @@ table/format.h
 /home/meggie/文档/partnercompaction/table/table/format.h
 table/iterator_wrapper.h
 /home/meggie/文档/partnercompaction/table/table/iterator_wrapper.h
+leveldb/comparator.h
+/home/meggie/文档/partnercompaction/table/leveldb/comparator.h
+db/dbformat.h
+/home/meggie/文档/partnercompaction/table/db/dbformat.h
 
 /home/meggie/文档/partnercompaction/util/arena.cc
 util/arena.h
