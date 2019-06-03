@@ -1012,34 +1012,43 @@ void DBImpl::UpdateFileWithPartnerCompaction(VersionEdit* edit,
        number = c->input(1, p_sptcompaction->inputs1_index)->number;
        if(compact == nullptr) {
            std::vector<int>& victims = p_sptcompaction->victims;
-           for(int j = 0; j < victims.size(); j++) {
-              FileMetaData* fm = c->input(0, victims[j]);
+           int victim_size = victims.size();
+           int victim_start = victims[0];
+           int victim_end = victims[victim_size - 1];
+           for(int j = victim_start; j <= victim_end; j++) {
+              FileMetaData* fm = c->input(0, j);
               Partner ptner;
               ptner.partner_number = fm->number;
               ptner.partner_size = fm->file_size;
-              Table* tableptr;
+              Table* tableptr = nullptr;
               Iterator* iter = table_cache_->NewIterator(ReadOptions(),
                       fm->number, fm->file_size, &tableptr);
-              
-              if(j == 0){
-                  Slice smallest = tableptr->GreaterAndEqual(
-                          p_sptcompaction->victim_start.Encode());
+             
+              if(tableptr == nullptr) {
+                DEBUG_T("tableptr is nullptr\n");
+              }
+
+              if(j == victim_start){
+                  std::string smallest;
+                  tableptr->GreaterAndEqual(
+                          p_sptcompaction->victim_start.Encode(), smallest);
                   InternalKey ismallest;
-                  ismallest.DecodeFrom(smallest);
+                  ismallest.DecodeFrom(Slice(smallest));
+                  DEBUG_T("ismallest:%s\n", ismallest.user_key().ToString().c_str());
                   ptner.partner_smallest = ismallest;
               } else 
                   ptner.partner_smallest = fm->smallest;
               
-              if(j == (victims.size() - 1)) {
-                  Slice largest;
+              if(j == victim_end) {
+                  std::string largest;
                   if(p_sptcompaction->containsend) 
-                      largest = tableptr->LessAndEqual(
-                            p_sptcompaction->victim_end.Encode());
+                      tableptr->LessAndEqual(
+                            p_sptcompaction->victim_end.Encode(), largest);
                   else 
-                      largest = tableptr->LessThan(
-                            p_sptcompaction->victim_end.Encode());
+                      tableptr->LessThan(
+                            p_sptcompaction->victim_end.Encode(), largest);
                   InternalKey ilargest;
-                  ilargest.DecodeFrom(largest);
+                  ilargest.DecodeFrom(Slice(largest));
                   ptner.partner_largest = ilargest;
               } else 
                   ptner.partner_largest = fm->largest;
@@ -1058,6 +1067,7 @@ void DBImpl::UpdateFileWithPartnerCompaction(VersionEdit* edit,
               partners.push_back(ptner);
            }
        }
+       DEBUG_T("partners.size():%d\n", partners.size());
        edit->UpdateFile(level + 1, number, partners);
    }
 }
@@ -1174,7 +1184,7 @@ void DBImpl::DealWithTraditionCompaction(CompactionState* compact,
         merge_iter->Next();
     }
    
-    DEBUG_T("partner largest is %s\n", 
+    DEBUG_T("in TraditionCompaction, current_output largest is %s\n", 
         compact->current_output()->largest.user_key().ToString().c_str());
     if(status.ok() && shutting_down_.Acquire_Load()) {
         status = Status::IOError("Deleting DB during compaction");
@@ -1453,9 +1463,12 @@ Status DBImpl::DoSplitCompactionWork(Compaction* c) {
         for(int i = 0; i < p_sptcompactions.size(); i++) {
            DEBUG_T("%d, ", p_sptcompactions[i]->inputs1_index);
            std::vector<int>& victims = p_sptcompactions[i]->victims;
+           int victim_size = victims.size();
+           int victim_start = victims[0];
+           int victim_end = victims[victim_size - 1];
            bool use_origin_victim = true;
-           for(int i = 0; i < victims.size(); i++) {
-             if(c->input(0, victims[i])->partners.size() !=  0)
+           for(int j = victim_start; j <= victim_end; j++) {
+             if(c->input(0, j)->partners.size() !=  0)
                 use_origin_victim = false;
            }
            if(use_origin_victim) {

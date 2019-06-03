@@ -338,19 +338,39 @@ static Iterator* GetFileIteratorWithPartner(void* arg,
 
 		FileMetaData* file = (*flist)[index];
 		
+        //DEBUG_T("GetFileIteratorWithPartner:\n");
         //DEBUG_T("file->number:%lld\n", file->number);
 
 		int sz = file->partners.size() + 1;
 		Iterator** list = new Iterator*[sz];
 		list[0] = cache->NewIterator(options, file->number, file->file_size);
+        //DEBUG_T("partners:\n");
 		for(int i = 0; i < sz - 1; i++) {
+           // DEBUG_T("partner_number:%lld, partner_smallest:%s, partner_largest:%s\n", 
+           //     file->partners[i].partner_number, 
+           //     file->partners[i].partner_smallest.user_key().ToString().c_str(),
+           //     file->partners[i].partner_largest.user_key().ToString().c_str());
             Iterator* iter = cache->NewIterator(options,
 								  file->partners[i].partner_number,
 								  file->partners[i].partner_size);
             iter->SetRange(file->partners[i].partner_smallest.Encode(), 
                            file->partners[i].partner_largest.Encode());
+            //DEBUG_T("after set range, scan partner:\n");
+            //int count = 0;
+            //iter->SeekToFirst();
+            //for(; iter->Valid(); iter->Next()){
+            //    count++;
+            //    Slice key = iter->key();
+            //    ParsedInternalKey ikey;
+            //    ParseInternalKey(key, &ikey);
+            //    DEBUG_T("%s, ", ikey.user_key.ToString().c_str());
+            //    if(count % 8 == 0)
+            //        DEBUG_T("\n");
+            //}
+            //DEBUG_T("scan end\n");
 			list[i + 1] = iter;
 		}
+
 		return NewMergingIterator(&global_icmp, list, sz);
 	}
 }
@@ -360,10 +380,32 @@ Iterator* VersionSet::NewIteratorWithPartner(TableCache* cache,
     int sz = file->partners.size() + 1;
     Iterator** list = new Iterator*[sz];
     list[0] = cache->NewIterator(ReadOptions(), file->number, file->file_size);
+    //DEBUG_T("GetFileIteratorWithPartner:\n");
+    //DEBUG_T("file->number:%lld\n", file->number);
+    //DEBUG_T("partners:\n");
     for(int i = 0; i < sz - 1; i++) {
-        list[i + 1] = cache->NewIterator(ReadOptions(),
+        //DEBUG_T("partner_number:%lld, partner_smallest:%s, partner_largest:%s\n", file->partners[i].partner_number, 
+        //file->partners[i].partner_smallest.user_key().ToString().c_str(),
+        //file->partners[i].partner_largest.user_key().ToString().c_str());
+        Iterator* iter = cache->NewIterator(ReadOptions(),
                               file->partners[i].partner_number,
                               file->partners[i].partner_size);
+        iter->SetRange(file->partners[i].partner_smallest.Encode(),
+                       file->partners[i].partner_largest.Encode());
+        //DEBUG_T("after set range, scan partner:\n");
+        //int count = 0;
+        //iter->SeekToFirst();
+        //for(; iter->Valid(); iter->Next()){
+        //    count++;
+        //    Slice key = iter->key();
+        //    ParsedInternalKey ikey;
+        //    ParseInternalKey(key, &ikey);
+        //    DEBUG_T("%s, ", ikey.user_key.ToString().c_str());
+        //    if(count % 8 == 0)
+        //        DEBUG_T("\n");
+        //}
+        //DEBUG_T("scan end\n");
+        list[i + 1] = iter;
     }
     return NewMergingIterator(&icmp_, list, sz);
 }
@@ -989,7 +1031,6 @@ class VersionSet::Builder {
 	   fm->refs = 1;
 	   std::vector<Partner>& partners = levels_[level].updated_files[f->number];
 	   fm->partners.assign(partners.begin(), partners.end());	   
-	   
 	   for(int j =0; j < fm->partners.size(); j++){
 		   Partner& ptner = fm->partners[j];
 		   DEBUG_T("get partner, origin SSTable:%d, smallest:%s, largest:%s\n", 
@@ -1020,7 +1061,8 @@ class VersionSet::Builder {
 	} else {
 	//////////meggie
       //if(level > 1)
-      //   DEBUG_T("MaybeAddFile, smallest:%s, largest:%s\n",
+      //   DEBUG_T("MaybeAddFile, number:%d, smallest:%s, largest:%s\n",
+      //        f->number,
       //        f->smallest.user_key().ToString().c_str(),
       //        f->largest.user_key().ToString().c_str());
       std::vector<FileMetaData*>* files = &v->files_[level];
