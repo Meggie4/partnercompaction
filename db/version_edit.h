@@ -35,8 +35,13 @@ struct FileMetaData {
   InternalKey origin_smallest;
   InternalKey origin_largest;
   std::vector<Partner> partners;
+  bool nvm_partners;
   //////////////meggie
-  FileMetaData() : refs(0), allowed_seeks(1 << 30), file_size(0) { }
+  FileMetaData() : refs(0), allowed_seeks(1 << 30), file_size(0), 
+    /////////////meggie
+    nvm_partners(false)
+    /////////////meggie
+    { }
   
 };
 
