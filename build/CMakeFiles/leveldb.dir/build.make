@@ -945,9 +945,57 @@ CMakeFiles/leveldb.dir/util/debug.cc.o.provides: CMakeFiles/leveldb.dir/util/deb
 CMakeFiles/leveldb.dir/util/debug.cc.o.provides.build: CMakeFiles/leveldb.dir/util/debug.cc.o
 
 
+CMakeFiles/leveldb.dir/util/BloomFilter.cc.o: CMakeFiles/leveldb.dir/flags.make
+CMakeFiles/leveldb.dir/util/BloomFilter.cc.o: ../util/BloomFilter.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/meggie/文档/partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/leveldb.dir/util/BloomFilter.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/leveldb.dir/util/BloomFilter.cc.o -c /home/meggie/文档/partnercompaction/util/BloomFilter.cc
+
+CMakeFiles/leveldb.dir/util/BloomFilter.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/leveldb.dir/util/BloomFilter.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/meggie/文档/partnercompaction/util/BloomFilter.cc > CMakeFiles/leveldb.dir/util/BloomFilter.cc.i
+
+CMakeFiles/leveldb.dir/util/BloomFilter.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/leveldb.dir/util/BloomFilter.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/meggie/文档/partnercompaction/util/BloomFilter.cc -o CMakeFiles/leveldb.dir/util/BloomFilter.cc.s
+
+CMakeFiles/leveldb.dir/util/BloomFilter.cc.o.requires:
+
+.PHONY : CMakeFiles/leveldb.dir/util/BloomFilter.cc.o.requires
+
+CMakeFiles/leveldb.dir/util/BloomFilter.cc.o.provides: CMakeFiles/leveldb.dir/util/BloomFilter.cc.o.requires
+	$(MAKE) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/BloomFilter.cc.o.provides.build
+.PHONY : CMakeFiles/leveldb.dir/util/BloomFilter.cc.o.provides
+
+CMakeFiles/leveldb.dir/util/BloomFilter.cc.o.provides.build: CMakeFiles/leveldb.dir/util/BloomFilter.cc.o
+
+
+CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o: CMakeFiles/leveldb.dir/flags.make
+CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o: ../util/MurmurHash3.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/meggie/文档/partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o -c /home/meggie/文档/partnercompaction/util/MurmurHash3.cc
+
+CMakeFiles/leveldb.dir/util/MurmurHash3.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/leveldb.dir/util/MurmurHash3.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/meggie/文档/partnercompaction/util/MurmurHash3.cc > CMakeFiles/leveldb.dir/util/MurmurHash3.cc.i
+
+CMakeFiles/leveldb.dir/util/MurmurHash3.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/leveldb.dir/util/MurmurHash3.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/meggie/文档/partnercompaction/util/MurmurHash3.cc -o CMakeFiles/leveldb.dir/util/MurmurHash3.cc.s
+
+CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o.requires:
+
+.PHONY : CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o.requires
+
+CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o.provides: CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o.requires
+	$(MAKE) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o.provides.build
+.PHONY : CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o.provides
+
+CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o.provides.build: CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o
+
+
 CMakeFiles/leveldb.dir/util/env_posix.cc.o: CMakeFiles/leveldb.dir/flags.make
 CMakeFiles/leveldb.dir/util/env_posix.cc.o: ../util/env_posix.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/meggie/文档/partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/leveldb.dir/util/env_posix.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/meggie/文档/partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object CMakeFiles/leveldb.dir/util/env_posix.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/leveldb.dir/util/env_posix.cc.o -c /home/meggie/文档/partnercompaction/util/env_posix.cc
 
 CMakeFiles/leveldb.dir/util/env_posix.cc.i: cmake_force
@@ -971,7 +1019,7 @@ CMakeFiles/leveldb.dir/util/env_posix.cc.o.provides.build: CMakeFiles/leveldb.di
 
 CMakeFiles/leveldb.dir/helpers/memenv/memenv.cc.o: CMakeFiles/leveldb.dir/flags.make
 CMakeFiles/leveldb.dir/helpers/memenv/memenv.cc.o: ../helpers/memenv/memenv.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/meggie/文档/partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/leveldb.dir/helpers/memenv/memenv.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/meggie/文档/partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building CXX object CMakeFiles/leveldb.dir/helpers/memenv/memenv.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/leveldb.dir/helpers/memenv/memenv.cc.o -c /home/meggie/文档/partnercompaction/helpers/memenv/memenv.cc
 
 CMakeFiles/leveldb.dir/helpers/memenv/memenv.cc.i: cmake_force
@@ -1032,6 +1080,8 @@ leveldb_OBJECTS = \
 "CMakeFiles/leveldb.dir/util/options.cc.o" \
 "CMakeFiles/leveldb.dir/util/status.cc.o" \
 "CMakeFiles/leveldb.dir/util/debug.cc.o" \
+"CMakeFiles/leveldb.dir/util/BloomFilter.cc.o" \
+"CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o" \
 "CMakeFiles/leveldb.dir/util/env_posix.cc.o" \
 "CMakeFiles/leveldb.dir/helpers/memenv/memenv.cc.o"
 
@@ -1075,11 +1125,13 @@ libleveldb.a: CMakeFiles/leveldb.dir/util/logging.cc.o
 libleveldb.a: CMakeFiles/leveldb.dir/util/options.cc.o
 libleveldb.a: CMakeFiles/leveldb.dir/util/status.cc.o
 libleveldb.a: CMakeFiles/leveldb.dir/util/debug.cc.o
+libleveldb.a: CMakeFiles/leveldb.dir/util/BloomFilter.cc.o
+libleveldb.a: CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o
 libleveldb.a: CMakeFiles/leveldb.dir/util/env_posix.cc.o
 libleveldb.a: CMakeFiles/leveldb.dir/helpers/memenv/memenv.cc.o
 libleveldb.a: CMakeFiles/leveldb.dir/build.make
 libleveldb.a: CMakeFiles/leveldb.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/meggie/文档/partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Linking CXX static library libleveldb.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/meggie/文档/partnercompaction/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Linking CXX static library libleveldb.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/leveldb.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/leveldb.dir/link.txt --verbose=$(VERBOSE)
 
@@ -1125,6 +1177,8 @@ CMakeFiles/leveldb.dir/requires: CMakeFiles/leveldb.dir/util/logging.cc.o.requir
 CMakeFiles/leveldb.dir/requires: CMakeFiles/leveldb.dir/util/options.cc.o.requires
 CMakeFiles/leveldb.dir/requires: CMakeFiles/leveldb.dir/util/status.cc.o.requires
 CMakeFiles/leveldb.dir/requires: CMakeFiles/leveldb.dir/util/debug.cc.o.requires
+CMakeFiles/leveldb.dir/requires: CMakeFiles/leveldb.dir/util/BloomFilter.cc.o.requires
+CMakeFiles/leveldb.dir/requires: CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o.requires
 CMakeFiles/leveldb.dir/requires: CMakeFiles/leveldb.dir/util/env_posix.cc.o.requires
 CMakeFiles/leveldb.dir/requires: CMakeFiles/leveldb.dir/helpers/memenv/memenv.cc.o.requires
 

@@ -103,6 +103,14 @@ db/skiplist.h
 ../db/db/skiplist.h
 util/arena.h
 ../db/util/arena.h
+util/BloomFilter.h
+../db/util/BloomFilter.h
+string
+-
+unordered_set
+-
+util/debug.h
+../db/util/debug.h
 
 ..//db/skiplist.h
 assert.h
@@ -115,6 +123,8 @@ util/arena.h
 ../db/util/arena.h
 util/random.h
 ../db/util/random.h
+port/cache_flush.h
+../db/port/cache_flush.h
 
 ..//db/snapshot.h
 db/dbformat.h
@@ -172,6 +182,8 @@ leveldb/write_batch.h
 leveldb/export.h
 ../helpers/memenv/leveldb/export.h
 
+..//hoard/heaplayers/wrappers/gnuwrapper.h
+
 ..//port/atomic_pointer.h
 stdint.h
 -
@@ -179,6 +191,16 @@ atomic
 -
 windows.h
 -
+
+..//port/cache_flush.h
+stdio.h
+-
+stdlib.h
+-
+util/debug.h
+../port/util/debug.h
+pmdk/src/include/libpmem.h
+../port/pmdk/src/include/libpmem.h
 
 ..//port/port.h
 string.h
@@ -269,6 +291,14 @@ leveldb/slice.h
 ..//table/two_level_iterator.h
 leveldb/iterator.h
 ../table/leveldb/iterator.h
+
+..//util/BloomFilter.h
+stdlib.h
+-
+vector
+-
+stdint.h
+-
 
 ..//util/arena.h
 vector
@@ -737,6 +767,18 @@ leveldb/iterator.h
 /home/meggie/文档/partnercompaction/db/leveldb/iterator.h
 util/coding.h
 /home/meggie/文档/partnercompaction/db/util/coding.h
+db/skiplist.h
+/home/meggie/文档/partnercompaction/db/db/skiplist.h
+port/cache_flush.h
+/home/meggie/文档/partnercompaction/db/port/cache_flush.h
+cstdio
+-
+gnuwrapper.h
+-
+string
+-
+unordered_set
+-
 util/debug.h
 /home/meggie/文档/partnercompaction/db/util/debug.h
 
@@ -1000,11 +1042,69 @@ leveldb/comparator.h
 db/dbformat.h
 /home/meggie/文档/partnercompaction/table/db/dbformat.h
 
+/home/meggie/文档/partnercompaction/util/BloomFilter.cc
+BloomFilter.h
+/home/meggie/文档/partnercompaction/util/BloomFilter.h
+MurmurHash3.h
+/home/meggie/文档/partnercompaction/util/MurmurHash3.h
+algorithm
+-
+set
+-
+string
+-
+stdint.h
+-
+stdio.h
+-
+vector
+-
+iostream
+-
+array
+-
+
+/home/meggie/文档/partnercompaction/util/BloomFilter.h
+stdlib.h
+-
+vector
+-
+stdint.h
+-
+
+/home/meggie/文档/partnercompaction/util/MurmurHash3.cc
+MurmurHash3.h
+/home/meggie/文档/partnercompaction/util/MurmurHash3.h
+stdlib.h
+-
+stdint.h
+-
+
+/home/meggie/文档/partnercompaction/util/MurmurHash3.h
+stdint.h
+-
+
 /home/meggie/文档/partnercompaction/util/arena.cc
+cstdlib
+-
 util/arena.h
 /home/meggie/文档/partnercompaction/util/util/arena.h
 assert.h
 -
+hoard/heaplayers/wrappers/gnuwrapper.h
+/home/meggie/文档/partnercompaction/util/hoard/heaplayers/wrappers/gnuwrapper.h
+unistd.h
+-
+sys/mman.h
+-
+sys/types.h
+-
+sys/stat.h
+-
+fcntl.h
+-
+util/debug.h
+/home/meggie/文档/partnercompaction/util/util/debug.h
 
 /home/meggie/文档/partnercompaction/util/bloom.cc
 leveldb/filter_policy.h

@@ -61,8 +61,8 @@ NUMTHREAD=1
 #BENCHMARKS="loaduniform100_30000k,readuniform100_30000k"
 
 
-BENCHMARKS="fillrandom,readrandom"
-#BENCHMARKS="fillrandom"
+#BENCHMARKS="fillrandom,readrandom"
+BENCHMARKS="fillrandom"
 
 #NoveLSM specific parameters
 #NoveLSM uses memtable levels, always set to num_levels 2

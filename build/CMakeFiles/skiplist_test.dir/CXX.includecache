@@ -17,6 +17,8 @@ util/arena.h
 ../db/util/arena.h
 util/random.h
 ../db/util/random.h
+port/cache_flush.h
+../db/port/cache_flush.h
 
 ..//port/atomic_pointer.h
 stdint.h
@@ -25,6 +27,16 @@ atomic
 -
 windows.h
 -
+
+..//port/cache_flush.h
+stdio.h
+-
+stdlib.h
+-
+util/debug.h
+../port/util/debug.h
+pmdk/src/include/libpmem.h
+../port/pmdk/src/include/libpmem.h
 
 ..//port/port.h
 string.h
@@ -73,6 +85,8 @@ stdint.h
 -
 port/port.h
 ../util/port/port.h
+
+..//util/debug.h
 
 ..//util/hash.h
 stddef.h

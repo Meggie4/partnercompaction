@@ -3,10 +3,12 @@
 
 CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.o: ../db/skiplist.h
 CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.o: ../port/atomic_pointer.h
+CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.o: ../port/cache_flush.h
 CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.o: ../port/port.h
 CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.o: ../port/port_stdcxx.h
 CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.o: ../port/thread_annotations.h
 CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.o: ../util/arena.h
+CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.o: ../util/debug.h
 CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.o: ../util/hash.h
 CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.o: ../util/random.h
 CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.o: ../util/testharness.h

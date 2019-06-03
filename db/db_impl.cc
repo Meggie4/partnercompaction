@@ -50,6 +50,7 @@
 //uint64_t partner_number;
 int use_origin_victim_num = 0;
 int partner_compaction_num = 0;
+int generated_partner_num = 0;
 ////////////meggie
 namespace leveldb {
 
@@ -463,6 +464,9 @@ Status DBImpl::RecoverLogFile(uint64_t log_number, bool last_log,
 
     if (mem == nullptr) {
       mem = new MemTable(internal_comparator_);
+      ////////////meggie
+      mem->isNVMMemtable = false;
+      ////////////meggie
       mem->Ref();
     }
     status = WriteBatchInternal::InsertInto(&batch, mem);
@@ -510,6 +514,9 @@ Status DBImpl::RecoverLogFile(uint64_t log_number, bool last_log,
       } else {
         // mem can be nullptr if lognum exists but was empty.
         mem_ = new MemTable(internal_comparator_);
+        ////////////meggie
+        mem_->isNVMMemtable = false;
+        ////////////meggie
         mem_->Ref();
       }
     }
@@ -1065,6 +1072,10 @@ void DBImpl::UpdateFileWithPartnerCompaction(VersionEdit* edit,
               ptner.partner_smallest = out.smallest;
               ptner.partner_largest = out.largest;
               partners.push_back(ptner);
+              DEBUG_T("generated partner, number:%lld, size:%lld\n",
+                      ptner.partner_number, 
+                      ptner.partner_size);
+              generated_partner_num++;
            }
        }
        DEBUG_T("partners.size():%d\n", partners.size());
@@ -1211,17 +1222,6 @@ void DBImpl::DealWithPartnerCompaction(CompactionState* compact,
     assert(compact->builder == nullptr);
     assert(compact->outfile == nullptr);
 
-    Compaction* c = compact->compaction;
-    std::vector<int>& victims = p_sptcompaction->victims;
-    bool use_origin_victim = true;
-    for(int i = 0; i < victims.size(); i++) {
-        if(c->input(0, victims[i])->partners.size() !=  0)
-            use_origin_victim = false;
-    }
-    if(use_origin_victim)
-        use_origin_victim_num++;
-    partner_compaction_num++;
-    
     Iterator* input = p_sptcompaction->victim_iter;
     InternalKey victim_end = p_sptcompaction->victim_end;
     bool containsend = p_sptcompaction->containsend;
@@ -1474,6 +1474,7 @@ Status DBImpl::DoSplitCompactionWork(Compaction* c) {
            if(use_origin_victim) {
                DEBUG_T("use_origin_victim\n");
                p_compactionstate_list.push_back(nullptr);
+               use_origin_victim_num++;
            } else {
                DEBUG_T("not use_origin_victim\n");
                PartnerCompactionArgs* pcargs = new PartnerCompactionArgs;
@@ -1483,6 +1484,7 @@ Status DBImpl::DoSplitCompactionWork(Compaction* c) {
                p_compactionstate_list.push_back(pcargs->compact);
                pcargs->p_sptcompaction = p_sptcompactions[i];
                thpool_->AddJob(DoPartnerCompactionWork,	pcargs);
+               partner_compaction_num++;
            }
         }
     }
@@ -2049,6 +2051,9 @@ Status DBImpl::MakeRoomForWrite(bool force) {
       imm_ = mem_;
       has_imm_.Release_Store(imm_);
       mem_ = new MemTable(internal_comparator_);
+      ////////////meggie
+      mem_->isNVMMemtable = false;
+      ////////////meggie
       mem_->Ref();
       force = false;   // Do not force another compaction if have room
       MaybeScheduleCompaction();
@@ -2188,6 +2193,9 @@ Status DB::Open(const Options& options, const std::string& dbname,
       impl->logfile_number_ = new_log_number;
       impl->log_ = new log::Writer(lfile);
       impl->mem_ = new MemTable(impl->internal_comparator_);
+      ////////////meggie
+      impl->mem_->isNVMMemtable = false;
+      ////////////meggie
       impl->mem_->Ref();
     }
   }

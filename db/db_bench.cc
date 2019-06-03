@@ -32,6 +32,7 @@
 ///////////meggie
 extern int use_origin_victim_num;
 extern int partner_compaction_num;
+extern int generated_partner_num;
 ///////////meggie
 
 // Comma-separated list of operations to run in the specified order
@@ -78,7 +79,7 @@ static const char* FLAGS_benchmarks =
     ;*/
 
 // Number of key/values to place in database
-static int FLAGS_num = 30000000;
+static int FLAGS_num = 10000000;
 
 // Number of read operations to do.  If negative, do FLAGS_num reads.
 static int FLAGS_reads = -1;
@@ -833,8 +834,9 @@ class Benchmark {
       }
       ////////////meggie
       db_->PrintTimerAudit();
-      DEBUG_T("use_origin_victim_num:%d, partner_compaction_num:%d\n", 
-              use_origin_victim_num, partner_compaction_num);
+      DEBUG_T("use_origin_victim_num:%d, partner_compaction_num:%d, generated_partner_num:%d\n", 
+              use_origin_victim_num, partner_compaction_num,
+              generated_partner_num);
       ////////////meggie
     }
   }

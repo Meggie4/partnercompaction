@@ -123,6 +123,9 @@ target_sources(leveldb
     "${PROJECT_SOURCE_DIR}/port/port_stdcxx.h"
     "${PROJECT_SOURCE_DIR}/port/port.h"
     "${PROJECT_SOURCE_DIR}/port/thread_annotations.h"
+    ###########meggie
+    "${PROJECT_SOURCE_DIR}/port/cache_flush.h"
+    ###########meggie
     "${PROJECT_SOURCE_DIR}/table/block_builder.cc"
     "${PROJECT_SOURCE_DIR}/table/block_builder.h"
     "${PROJECT_SOURCE_DIR}/table/block.cc"
@@ -164,6 +167,10 @@ target_sources(leveldb
     "${PROJECT_SOURCE_DIR}/util/threadpool.h"
     "${PROJECT_SOURCE_DIR}/util/debug.cc"
     "${PROJECT_SOURCE_DIR}/util/debug.h"
+    "${PROJECT_SOURCE_DIR}/util/BloomFilter.cc"
+    "${PROJECT_SOURCE_DIR}/util/BloomFilter.h"
+    "${PROJECT_SOURCE_DIR}/util/MurmurHash3.cc"
+    "${PROJECT_SOURCE_DIR}/util/MurmurHash3.h"
     #########meggie
 
   # Only CMake 3.3+ supports PUBLIC sources in targets exported by "install".

@@ -35,6 +35,14 @@ db/skiplist.h
 ../db/db/skiplist.h
 util/arena.h
 ../db/util/arena.h
+util/BloomFilter.h
+../db/util/BloomFilter.h
+string
+-
+unordered_set
+-
+util/debug.h
+../db/util/debug.h
 
 ..//db/skiplist.h
 assert.h
@@ -47,6 +55,8 @@ util/arena.h
 ../db/util/arena.h
 util/random.h
 ../db/util/random.h
+port/cache_flush.h
+../db/port/cache_flush.h
 
 ..//db/write_batch_internal.h
 db/dbformat.h
@@ -61,6 +71,16 @@ atomic
 -
 windows.h
 -
+
+..//port/cache_flush.h
+stdio.h
+-
+stdlib.h
+-
+util/debug.h
+../port/util/debug.h
+pmdk/src/include/libpmem.h
+../port/pmdk/src/include/libpmem.h
 
 ..//port/port.h
 string.h
@@ -98,6 +118,14 @@ port/thread_annotations.h
 
 ..//port/thread_annotations.h
 
+..//util/BloomFilter.h
+stdlib.h
+-
+vector
+-
+stdint.h
+-
+
 ..//util/arena.h
 vector
 -
@@ -121,6 +149,8 @@ leveldb/slice.h
 ../util/leveldb/slice.h
 port/port.h
 ../util/port/port.h
+
+..//util/debug.h
 
 ..//util/logging.h
 stdio.h

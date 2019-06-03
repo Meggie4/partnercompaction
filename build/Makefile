@@ -1798,6 +1798,60 @@ table/two_level_iterator.cc.s:
 	$(MAKE) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/two_level_iterator.cc.s
 .PHONY : table/two_level_iterator.cc.s
 
+util/BloomFilter.o: util/BloomFilter.cc.o
+
+.PHONY : util/BloomFilter.o
+
+# target to build an object file
+util/BloomFilter.cc.o:
+	$(MAKE) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/BloomFilter.cc.o
+.PHONY : util/BloomFilter.cc.o
+
+util/BloomFilter.i: util/BloomFilter.cc.i
+
+.PHONY : util/BloomFilter.i
+
+# target to preprocess a source file
+util/BloomFilter.cc.i:
+	$(MAKE) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/BloomFilter.cc.i
+.PHONY : util/BloomFilter.cc.i
+
+util/BloomFilter.s: util/BloomFilter.cc.s
+
+.PHONY : util/BloomFilter.s
+
+# target to generate assembly for a file
+util/BloomFilter.cc.s:
+	$(MAKE) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/BloomFilter.cc.s
+.PHONY : util/BloomFilter.cc.s
+
+util/MurmurHash3.o: util/MurmurHash3.cc.o
+
+.PHONY : util/MurmurHash3.o
+
+# target to build an object file
+util/MurmurHash3.cc.o:
+	$(MAKE) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/MurmurHash3.cc.o
+.PHONY : util/MurmurHash3.cc.o
+
+util/MurmurHash3.i: util/MurmurHash3.cc.i
+
+.PHONY : util/MurmurHash3.i
+
+# target to preprocess a source file
+util/MurmurHash3.cc.i:
+	$(MAKE) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/MurmurHash3.cc.i
+.PHONY : util/MurmurHash3.cc.i
+
+util/MurmurHash3.s: util/MurmurHash3.cc.s
+
+.PHONY : util/MurmurHash3.s
+
+# target to generate assembly for a file
+util/MurmurHash3.cc.s:
+	$(MAKE) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/MurmurHash3.cc.s
+.PHONY : util/MurmurHash3.cc.s
+
 util/arena.o: util/arena.cc.o
 
 .PHONY : util/arena.o
@@ -2908,6 +2962,12 @@ help:
 	@echo "... table/two_level_iterator.o"
 	@echo "... table/two_level_iterator.i"
 	@echo "... table/two_level_iterator.s"
+	@echo "... util/BloomFilter.o"
+	@echo "... util/BloomFilter.i"
+	@echo "... util/BloomFilter.s"
+	@echo "... util/MurmurHash3.o"
+	@echo "... util/MurmurHash3.i"
+	@echo "... util/MurmurHash3.s"
 	@echo "... util/arena.o"
 	@echo "... util/arena.i"
 	@echo "... util/arena.s"
