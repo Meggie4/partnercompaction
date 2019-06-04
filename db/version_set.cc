@@ -350,11 +350,34 @@ static Iterator* GetFileIteratorWithPartner(void* arg,
            //     file->partners[i].partner_number, 
            //     file->partners[i].partner_smallest.user_key().ToString().c_str(),
            //     file->partners[i].partner_largest.user_key().ToString().c_str());
-            Iterator* iter = cache->NewIterator(options,
+            Iterator* iter;
+            if(file->nvm_partners){
+                DEBUG_T("nvm partner_number:%lld, partner_smallest:%s, partner_largest:%s\n", file->partners[i].partner_number, 
+                    file->partners[i].partner_smallest.user_key().ToString().c_str(),
+                    file->partners[i].partner_largest.user_key().ToString().c_str());
+                iter = file->partners[i].nvmtable->NewIterator();
+                DEBUG_T("to scan nvm partner\n");
+                //int count = 0;
+                //iter->SeekToFirst();
+                //for(; iter->Valid(); iter->Next()){
+                //    count++;
+                //    Slice key = iter->key();
+                //    ParsedInternalKey ikey;
+                //    if(!ParseInternalKey(key, &ikey)){
+                //        DEBUG_T("ParseInternalKey failed");
+                //        break;
+                //    }
+                //    DEBUG_T("%s, ", ikey.user_key.ToString().c_str());
+                //    if(count % 8 == 0)
+                //        DEBUG_T("\n");
+                //}
+            }
+            else {
+                iter = cache->NewIterator(options,
 								  file->partners[i].partner_number,
 								  file->partners[i].partner_size);
-            iter->SetRange(file->partners[i].partner_smallest.Encode(), 
-                           file->partners[i].partner_largest.Encode());
+                iter->SetRange(file->partners[i].partner_smallest.Encode(), file->partners[i].partner_largest.Encode());
+            }
             //DEBUG_T("after set range, scan partner:\n");
             //int count = 0;
             //iter->SeekToFirst();
@@ -384,14 +407,37 @@ Iterator* VersionSet::NewIteratorWithPartner(TableCache* cache,
     //DEBUG_T("file->number:%lld\n", file->number);
     //DEBUG_T("partners:\n");
     for(int i = 0; i < sz - 1; i++) {
-        //DEBUG_T("partner_number:%lld, partner_smallest:%s, partner_largest:%s\n", file->partners[i].partner_number, 
-        //file->partners[i].partner_smallest.user_key().ToString().c_str(),
-        //file->partners[i].partner_largest.user_key().ToString().c_str());
-        Iterator* iter = cache->NewIterator(ReadOptions(),
+        Iterator* iter;
+        if(file->nvm_partners){
+            DEBUG_T("nvm partner_number:%lld, partner_smallest:%s, partner_largest:%s\n", file->partners[i].partner_number, 
+                file->partners[i].partner_smallest.user_key().ToString().c_str(),
+                file->partners[i].partner_largest.user_key().ToString().c_str());
+            iter = file->partners[i].nvmtable->NewIterator();
+            DEBUG_T("to scan nvm partner, address: %p\n", 
+                    file->partners[i].nvmtable);
+            //int count = 0;
+            //iter->SeekToFirst();
+            //DEBUG_T("after SeekToFirst\n");
+            //for(; iter->Valid(); iter->Next()){
+            //    count++;
+            //    Slice key = iter->key();
+            //    ParsedInternalKey ikey;
+            //    if(!ParseInternalKey(key, &ikey)){
+            //        DEBUG_T("ParseInternalKey failed");
+            //        break;
+            //    }
+            //    DEBUG_T("%s, ", ikey.user_key.ToString().c_str());
+            //    if(count % 8 == 0)
+            //        DEBUG_T("\n");
+            //}
+        }
+        else {
+            iter = cache->NewIterator(ReadOptions(),
                               file->partners[i].partner_number,
                               file->partners[i].partner_size);
-        iter->SetRange(file->partners[i].partner_smallest.Encode(),
+            iter->SetRange(file->partners[i].partner_smallest.Encode(),
                        file->partners[i].partner_largest.Encode());
+        }
         //DEBUG_T("after set range, scan partner:\n");
         //int count = 0;
         //iter->SeekToFirst();
@@ -1528,7 +1574,6 @@ void VersionSet::TestIterator(Iterator* iter, bool range, InternalKey start, Int
         DEBUG_T("\n");
     }
 }
-
 
 void VersionSet::MergeTSplitCompaction(Compaction* c, 
 					std::vector<SplitCompaction*>& t_sptcompactions,

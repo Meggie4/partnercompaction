@@ -27,6 +27,8 @@ port/thread_annotations.h
 ../db/port/thread_annotations.h
 util/timer.h
 ../db/util/timer.h
+map
+-
 
 ..//db/dbformat.h
 stdio.h

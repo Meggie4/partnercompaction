@@ -11,7 +11,9 @@ set(CMAKE_C_COMPILER_ID "GNU")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_C
+  "ENABLE_RECOVERY"
   "LEVELDB_PLATFORM_POSIX=1"
+  "USE_OFFSETS"
   )
 
 # The include file search paths:
@@ -28,7 +30,9 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_CXX
+  "ENABLE_RECOVERY"
   "LEVELDB_PLATFORM_POSIX=1"
+  "USE_OFFSETS"
   )
 
 # The include file search paths:

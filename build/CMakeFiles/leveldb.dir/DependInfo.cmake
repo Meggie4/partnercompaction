@@ -50,8 +50,10 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_CXX
+  "ENABLE_RECOVERY"
   "LEVELDB_COMPILE_LIBRARY"
   "LEVELDB_PLATFORM_POSIX=1"
+  "USE_OFFSETS"
   )
 
 # The include file search paths:

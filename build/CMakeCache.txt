@@ -229,6 +229,9 @@ CMAKE_STRIP:FILEPATH=/usr/bin/strip
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
+//Define macro
+ENABLE_RECOVERY:BOOL=ON
+
 //Build LevelDB's benchmarks
 LEVELDB_BUILD_BENCHMARKS:BOOL=ON
 
@@ -237,6 +240,9 @@ LEVELDB_BUILD_TESTS:BOOL=ON
 
 //Install LevelDB's header and library
 LEVELDB_INSTALL:BOOL=ON
+
+//Define macro
+USE_OFFSETS:BOOL=ON
 
 //Value Computed by CMake
 leveldb_BINARY_DIR:STATIC=/home/meggie/文档/partnercompaction/build

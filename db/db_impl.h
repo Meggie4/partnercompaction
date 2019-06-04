@@ -17,6 +17,7 @@
 
 ///////////////meggie
 #include "util/timer.h"
+#include <map>
 ///////////////meggie
 
 namespace leveldb {
@@ -36,7 +37,11 @@ class FileMetaData;
 
 class DBImpl : public DB {
  public:
-  DBImpl(const Options& options, const std::string& dbname);
+  DBImpl(const Options& options, const std::string& dbname, 
+        /////////////meggie
+        const std::string& dbname_nvm = "/mnt/pmemdir/dbbench/"
+        /////////////meggie
+        );
   virtual ~DBImpl();
 
   // Implementations of the DB interface
@@ -79,6 +84,7 @@ class DBImpl : public DB {
   friend class DB;
   struct CompactionState;
   //////////////meggie
+  struct PartnerCompactionState;
   struct TraditionalCompactionArgs;
   struct PartnerCompactionArgs;
   /////////////meggie
@@ -135,7 +141,7 @@ class DBImpl : public DB {
   static void DoPartnerCompactionWork(void* args);
   void DealWithTraditionCompaction(CompactionState* compact, 
                         TSplitCompaction* t_sptcompaction);
-  void DealWithPartnerCompaction(CompactionState* compact, 
+  void DealWithPartnerCompaction(PartnerCompactionState* compact, 
                             SplitCompaction* p_sptcompaction);
   void AddFileWithTraditionalCompaction(VersionEdit* edit, 
         std::vector<CompactionState*>& t_compactionstate_list);
@@ -144,8 +150,13 @@ class DBImpl : public DB {
   void UpdateFileWithPartnerCompaction(VersionEdit* edit,
             Compaction* c,
             std::vector<SplitCompaction*>& pcompaction_files, 
-            std::vector<CompactionState*>& p_compactionstate_list);
+            std::vector<PartnerCompactionState*>& p_compactionstate_list);
   Status DealWithSingleCompaction(CompactionState* compact);
+  Status OpenCompactionNVMTable(PartnerCompactionState* compact);
+  void CleanupPartnerCompaction(PartnerCompactionState* compact);
+  Status FinishCompactionNVMTable(PartnerCompactionState* compact,
+                                        Iterator* input);
+  std::map<uint64_t, MemTable*> partner_mapping_;
   ///////////////meggie
 
   Status OpenCompactionOutputFile(CompactionState* compact);
@@ -161,6 +172,9 @@ class DBImpl : public DB {
   const bool owns_info_log_;
   const bool owns_cache_;
   const std::string dbname_;
+  //////////////meggie
+  const std::string dbname_nvm_;
+  //////////////meggie
 
   // table_cache_ provides its own synchronization
   TableCache* const table_cache_;
@@ -244,7 +258,11 @@ class DBImpl : public DB {
 Options SanitizeOptions(const std::string& db,
                         const InternalKeyComparator* icmp,
                         const InternalFilterPolicy* ipolicy,
-                        const Options& src);
+                        const Options& src,
+                        /////////////meggie
+                        const std::string& dbname_nvm = "/mnt/pmemdir/dbbench"
+                        /////////////meggie
+                        );
 
 }  // namespace leveldb
 

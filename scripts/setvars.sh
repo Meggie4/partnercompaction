@@ -2,6 +2,8 @@
 export OLDNVMIMMUSRC=$PWD
 export DBBENCH=$OLDNVMIMMUSRC/build
 export TEST_TMPDIR=/mnt/ssd
+#export TEST_TMPDIR=/mnt/pmemdir
+export TEST_MEMDIR=/mnt/pmemdir
 #DRAM buffer size in MB
 export DRAMBUFFSZ=4
 #NVM buffer size in MB

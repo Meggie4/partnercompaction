@@ -122,6 +122,10 @@ bool ParseFileName(const std::string& filename,
       *type = kTableFile;
     } else if (suffix == Slice(".dbtmp")) {
       *type = kTempFile;
+    //////////////////meggie
+    } else if(suffix == Slice(".map")){
+      *type = kMapFile;
+    //////////////////meggie
     } else {
       return false;
     }

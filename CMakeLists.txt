@@ -19,6 +19,17 @@ option(LEVELDB_BUILD_TESTS "Build LevelDB's unit tests" ON)
 option(LEVELDB_BUILD_BENCHMARKS "Build LevelDB's benchmarks" ON)
 option(LEVELDB_INSTALL "Install LevelDB's header and library" ON)
 
+##############meggie
+option(USE_OFFSETS "Define macro" ON)
+if(USE_OFFSETS)
+    ADD_DEFINITIONS(-DUSE_OFFSETS)
+endif(USE_OFFSETS)
+option(ENABLE_RECOVERY "Define macro" ON)
+if(ENABLE_RECOVERY)
+    ADD_DEFINITIONS(-DENABLE_RECOVERY)
+endif(ENABLE_RECOVERY)
+##############meggie
+
 include(TestBigEndian)
 test_big_endian(LEVELDB_IS_BIG_ENDIAN)
 
@@ -308,7 +319,7 @@ if(LEVELDB_BUILD_TESTS)
     leveldb_test("${PROJECT_SOURCE_DIR}/db/filename_test.cc")
     leveldb_test("${PROJECT_SOURCE_DIR}/db/log_test.cc")
     leveldb_test("${PROJECT_SOURCE_DIR}/db/recovery_test.cc")
-    leveldb_test("${PROJECT_SOURCE_DIR}/db/skiplist_test.cc")
+    #leveldb_test("${PROJECT_SOURCE_DIR}/db/skiplist_test.cc")
     leveldb_test("${PROJECT_SOURCE_DIR}/db/version_edit_test.cc")
     leveldb_test("${PROJECT_SOURCE_DIR}/db/version_set_test.cc")
     leveldb_test("${PROJECT_SOURCE_DIR}/db/write_batch_test.cc")

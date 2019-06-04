@@ -672,6 +672,25 @@ class PosixEnv : public Env {
 
     return Status::OK();
   }
+  
+  //////////////meggie
+  Status GetMEMDirectory(std::string* result) override {
+    const char* env = std::getenv("TEST_MEMDIR");
+    if (env && env[0] != '\0') {
+      *result = env;
+    } else {
+      char buf[100];
+      std::snprintf(buf, sizeof(buf), "/mnt/pmemdir/leveldbtest-%d",
+                    static_cast<int>(::geteuid()));
+      *result = buf;
+    }
+
+    // The CreateDir status is ignored because the directory may already exist.
+    CreateDir(*result);
+
+    return Status::OK();
+  }
+  //////////////meggie
 
   Status NewLogger(const std::string& filename, Logger** result) override {
     std::FILE* fp = std::fopen(filename.c_str(), "w");

@@ -233,6 +233,32 @@ coding_test/fast:
 .PHONY : coding_test/fast
 
 #=============================================================================
+# Target rules for targets named crc32c_test
+
+# Build rule for target.
+crc32c_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 crc32c_test
+.PHONY : crc32c_test
+
+# fast build rule for target.
+crc32c_test/fast:
+	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/build
+.PHONY : crc32c_test/fast
+
+#=============================================================================
+# Target rules for targets named cache_test
+
+# Build rule for target.
+cache_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cache_test
+.PHONY : cache_test
+
+# fast build rule for target.
+cache_test/fast:
+	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/build
+.PHONY : cache_test/fast
+
+#=============================================================================
 # Target rules for targets named bloom_test
 
 # Build rule for target.
@@ -504,45 +530,6 @@ version_set_test: cmake_check_build_system
 version_set_test/fast:
 	$(MAKE) -f CMakeFiles/version_set_test.dir/build.make CMakeFiles/version_set_test.dir/build
 .PHONY : version_set_test/fast
-
-#=============================================================================
-# Target rules for targets named crc32c_test
-
-# Build rule for target.
-crc32c_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 crc32c_test
-.PHONY : crc32c_test
-
-# fast build rule for target.
-crc32c_test/fast:
-	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/build
-.PHONY : crc32c_test/fast
-
-#=============================================================================
-# Target rules for targets named cache_test
-
-# Build rule for target.
-cache_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 cache_test
-.PHONY : cache_test
-
-# fast build rule for target.
-cache_test/fast:
-	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/build
-.PHONY : cache_test/fast
-
-#=============================================================================
-# Target rules for targets named skiplist_test
-
-# Build rule for target.
-skiplist_test: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 skiplist_test
-.PHONY : skiplist_test
-
-# fast build rule for target.
-skiplist_test/fast:
-	$(MAKE) -f CMakeFiles/skiplist_test.dir/build.make CMakeFiles/skiplist_test.dir/build
-.PHONY : skiplist_test/fast
 
 #=============================================================================
 # Target rules for targets named version_edit_test
@@ -1176,33 +1163,6 @@ db/repair.s: db/repair.cc.s
 db/repair.cc.s:
 	$(MAKE) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/repair.cc.s
 .PHONY : db/repair.cc.s
-
-db/skiplist_test.o: db/skiplist_test.cc.o
-
-.PHONY : db/skiplist_test.o
-
-# target to build an object file
-db/skiplist_test.cc.o:
-	$(MAKE) -f CMakeFiles/skiplist_test.dir/build.make CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.o
-.PHONY : db/skiplist_test.cc.o
-
-db/skiplist_test.i: db/skiplist_test.cc.i
-
-.PHONY : db/skiplist_test.i
-
-# target to preprocess a source file
-db/skiplist_test.cc.i:
-	$(MAKE) -f CMakeFiles/skiplist_test.dir/build.make CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.i
-.PHONY : db/skiplist_test.cc.i
-
-db/skiplist_test.s: db/skiplist_test.cc.s
-
-.PHONY : db/skiplist_test.s
-
-# target to generate assembly for a file
-db/skiplist_test.cc.s:
-	$(MAKE) -f CMakeFiles/skiplist_test.dir/build.make CMakeFiles/skiplist_test.dir/db/skiplist_test.cc.s
-.PHONY : db/skiplist_test.cc.s
 
 db/table_cache.o: db/table_cache.cc.o
 
@@ -2565,6 +2525,8 @@ util/testharness.cc.o:
 	$(MAKE) -f CMakeFiles/logging_test.dir/build.make CMakeFiles/logging_test.dir/util/testharness.cc.o
 	$(MAKE) -f CMakeFiles/hash_test.dir/build.make CMakeFiles/hash_test.dir/util/testharness.cc.o
 	$(MAKE) -f CMakeFiles/coding_test.dir/build.make CMakeFiles/coding_test.dir/util/testharness.cc.o
+	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/util/testharness.cc.o
+	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/util/testharness.cc.o
 	$(MAKE) -f CMakeFiles/bloom_test.dir/build.make CMakeFiles/bloom_test.dir/util/testharness.cc.o
 	$(MAKE) -f CMakeFiles/arena_test.dir/build.make CMakeFiles/arena_test.dir/util/testharness.cc.o
 	$(MAKE) -f CMakeFiles/autocompact_test.dir/build.make CMakeFiles/autocompact_test.dir/util/testharness.cc.o
@@ -2584,9 +2546,6 @@ util/testharness.cc.o:
 	$(MAKE) -f CMakeFiles/log_test.dir/build.make CMakeFiles/log_test.dir/util/testharness.cc.o
 	$(MAKE) -f CMakeFiles/recovery_test.dir/build.make CMakeFiles/recovery_test.dir/util/testharness.cc.o
 	$(MAKE) -f CMakeFiles/version_set_test.dir/build.make CMakeFiles/version_set_test.dir/util/testharness.cc.o
-	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/util/testharness.cc.o
-	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/util/testharness.cc.o
-	$(MAKE) -f CMakeFiles/skiplist_test.dir/build.make CMakeFiles/skiplist_test.dir/util/testharness.cc.o
 	$(MAKE) -f CMakeFiles/version_edit_test.dir/build.make CMakeFiles/version_edit_test.dir/util/testharness.cc.o
 	$(MAKE) -f CMakeFiles/corruption_test.dir/build.make CMakeFiles/corruption_test.dir/util/testharness.cc.o
 	$(MAKE) -f CMakeFiles/filter_block_test.dir/build.make CMakeFiles/filter_block_test.dir/util/testharness.cc.o
@@ -2603,6 +2562,8 @@ util/testharness.cc.i:
 	$(MAKE) -f CMakeFiles/logging_test.dir/build.make CMakeFiles/logging_test.dir/util/testharness.cc.i
 	$(MAKE) -f CMakeFiles/hash_test.dir/build.make CMakeFiles/hash_test.dir/util/testharness.cc.i
 	$(MAKE) -f CMakeFiles/coding_test.dir/build.make CMakeFiles/coding_test.dir/util/testharness.cc.i
+	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/util/testharness.cc.i
+	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/util/testharness.cc.i
 	$(MAKE) -f CMakeFiles/bloom_test.dir/build.make CMakeFiles/bloom_test.dir/util/testharness.cc.i
 	$(MAKE) -f CMakeFiles/arena_test.dir/build.make CMakeFiles/arena_test.dir/util/testharness.cc.i
 	$(MAKE) -f CMakeFiles/autocompact_test.dir/build.make CMakeFiles/autocompact_test.dir/util/testharness.cc.i
@@ -2622,9 +2583,6 @@ util/testharness.cc.i:
 	$(MAKE) -f CMakeFiles/log_test.dir/build.make CMakeFiles/log_test.dir/util/testharness.cc.i
 	$(MAKE) -f CMakeFiles/recovery_test.dir/build.make CMakeFiles/recovery_test.dir/util/testharness.cc.i
 	$(MAKE) -f CMakeFiles/version_set_test.dir/build.make CMakeFiles/version_set_test.dir/util/testharness.cc.i
-	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/util/testharness.cc.i
-	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/util/testharness.cc.i
-	$(MAKE) -f CMakeFiles/skiplist_test.dir/build.make CMakeFiles/skiplist_test.dir/util/testharness.cc.i
 	$(MAKE) -f CMakeFiles/version_edit_test.dir/build.make CMakeFiles/version_edit_test.dir/util/testharness.cc.i
 	$(MAKE) -f CMakeFiles/corruption_test.dir/build.make CMakeFiles/corruption_test.dir/util/testharness.cc.i
 	$(MAKE) -f CMakeFiles/filter_block_test.dir/build.make CMakeFiles/filter_block_test.dir/util/testharness.cc.i
@@ -2641,6 +2599,8 @@ util/testharness.cc.s:
 	$(MAKE) -f CMakeFiles/logging_test.dir/build.make CMakeFiles/logging_test.dir/util/testharness.cc.s
 	$(MAKE) -f CMakeFiles/hash_test.dir/build.make CMakeFiles/hash_test.dir/util/testharness.cc.s
 	$(MAKE) -f CMakeFiles/coding_test.dir/build.make CMakeFiles/coding_test.dir/util/testharness.cc.s
+	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/util/testharness.cc.s
+	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/util/testharness.cc.s
 	$(MAKE) -f CMakeFiles/bloom_test.dir/build.make CMakeFiles/bloom_test.dir/util/testharness.cc.s
 	$(MAKE) -f CMakeFiles/arena_test.dir/build.make CMakeFiles/arena_test.dir/util/testharness.cc.s
 	$(MAKE) -f CMakeFiles/autocompact_test.dir/build.make CMakeFiles/autocompact_test.dir/util/testharness.cc.s
@@ -2660,9 +2620,6 @@ util/testharness.cc.s:
 	$(MAKE) -f CMakeFiles/log_test.dir/build.make CMakeFiles/log_test.dir/util/testharness.cc.s
 	$(MAKE) -f CMakeFiles/recovery_test.dir/build.make CMakeFiles/recovery_test.dir/util/testharness.cc.s
 	$(MAKE) -f CMakeFiles/version_set_test.dir/build.make CMakeFiles/version_set_test.dir/util/testharness.cc.s
-	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/util/testharness.cc.s
-	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/util/testharness.cc.s
-	$(MAKE) -f CMakeFiles/skiplist_test.dir/build.make CMakeFiles/skiplist_test.dir/util/testharness.cc.s
 	$(MAKE) -f CMakeFiles/version_edit_test.dir/build.make CMakeFiles/version_edit_test.dir/util/testharness.cc.s
 	$(MAKE) -f CMakeFiles/corruption_test.dir/build.make CMakeFiles/corruption_test.dir/util/testharness.cc.s
 	$(MAKE) -f CMakeFiles/filter_block_test.dir/build.make CMakeFiles/filter_block_test.dir/util/testharness.cc.s
@@ -2679,6 +2636,8 @@ util/testutil.cc.o:
 	$(MAKE) -f CMakeFiles/logging_test.dir/build.make CMakeFiles/logging_test.dir/util/testutil.cc.o
 	$(MAKE) -f CMakeFiles/hash_test.dir/build.make CMakeFiles/hash_test.dir/util/testutil.cc.o
 	$(MAKE) -f CMakeFiles/coding_test.dir/build.make CMakeFiles/coding_test.dir/util/testutil.cc.o
+	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/util/testutil.cc.o
+	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/util/testutil.cc.o
 	$(MAKE) -f CMakeFiles/bloom_test.dir/build.make CMakeFiles/bloom_test.dir/util/testutil.cc.o
 	$(MAKE) -f CMakeFiles/arena_test.dir/build.make CMakeFiles/arena_test.dir/util/testutil.cc.o
 	$(MAKE) -f CMakeFiles/autocompact_test.dir/build.make CMakeFiles/autocompact_test.dir/util/testutil.cc.o
@@ -2698,9 +2657,6 @@ util/testutil.cc.o:
 	$(MAKE) -f CMakeFiles/log_test.dir/build.make CMakeFiles/log_test.dir/util/testutil.cc.o
 	$(MAKE) -f CMakeFiles/recovery_test.dir/build.make CMakeFiles/recovery_test.dir/util/testutil.cc.o
 	$(MAKE) -f CMakeFiles/version_set_test.dir/build.make CMakeFiles/version_set_test.dir/util/testutil.cc.o
-	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/util/testutil.cc.o
-	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/util/testutil.cc.o
-	$(MAKE) -f CMakeFiles/skiplist_test.dir/build.make CMakeFiles/skiplist_test.dir/util/testutil.cc.o
 	$(MAKE) -f CMakeFiles/version_edit_test.dir/build.make CMakeFiles/version_edit_test.dir/util/testutil.cc.o
 	$(MAKE) -f CMakeFiles/corruption_test.dir/build.make CMakeFiles/corruption_test.dir/util/testutil.cc.o
 	$(MAKE) -f CMakeFiles/filter_block_test.dir/build.make CMakeFiles/filter_block_test.dir/util/testutil.cc.o
@@ -2717,6 +2673,8 @@ util/testutil.cc.i:
 	$(MAKE) -f CMakeFiles/logging_test.dir/build.make CMakeFiles/logging_test.dir/util/testutil.cc.i
 	$(MAKE) -f CMakeFiles/hash_test.dir/build.make CMakeFiles/hash_test.dir/util/testutil.cc.i
 	$(MAKE) -f CMakeFiles/coding_test.dir/build.make CMakeFiles/coding_test.dir/util/testutil.cc.i
+	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/util/testutil.cc.i
+	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/util/testutil.cc.i
 	$(MAKE) -f CMakeFiles/bloom_test.dir/build.make CMakeFiles/bloom_test.dir/util/testutil.cc.i
 	$(MAKE) -f CMakeFiles/arena_test.dir/build.make CMakeFiles/arena_test.dir/util/testutil.cc.i
 	$(MAKE) -f CMakeFiles/autocompact_test.dir/build.make CMakeFiles/autocompact_test.dir/util/testutil.cc.i
@@ -2736,9 +2694,6 @@ util/testutil.cc.i:
 	$(MAKE) -f CMakeFiles/log_test.dir/build.make CMakeFiles/log_test.dir/util/testutil.cc.i
 	$(MAKE) -f CMakeFiles/recovery_test.dir/build.make CMakeFiles/recovery_test.dir/util/testutil.cc.i
 	$(MAKE) -f CMakeFiles/version_set_test.dir/build.make CMakeFiles/version_set_test.dir/util/testutil.cc.i
-	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/util/testutil.cc.i
-	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/util/testutil.cc.i
-	$(MAKE) -f CMakeFiles/skiplist_test.dir/build.make CMakeFiles/skiplist_test.dir/util/testutil.cc.i
 	$(MAKE) -f CMakeFiles/version_edit_test.dir/build.make CMakeFiles/version_edit_test.dir/util/testutil.cc.i
 	$(MAKE) -f CMakeFiles/corruption_test.dir/build.make CMakeFiles/corruption_test.dir/util/testutil.cc.i
 	$(MAKE) -f CMakeFiles/filter_block_test.dir/build.make CMakeFiles/filter_block_test.dir/util/testutil.cc.i
@@ -2755,6 +2710,8 @@ util/testutil.cc.s:
 	$(MAKE) -f CMakeFiles/logging_test.dir/build.make CMakeFiles/logging_test.dir/util/testutil.cc.s
 	$(MAKE) -f CMakeFiles/hash_test.dir/build.make CMakeFiles/hash_test.dir/util/testutil.cc.s
 	$(MAKE) -f CMakeFiles/coding_test.dir/build.make CMakeFiles/coding_test.dir/util/testutil.cc.s
+	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/util/testutil.cc.s
+	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/util/testutil.cc.s
 	$(MAKE) -f CMakeFiles/bloom_test.dir/build.make CMakeFiles/bloom_test.dir/util/testutil.cc.s
 	$(MAKE) -f CMakeFiles/arena_test.dir/build.make CMakeFiles/arena_test.dir/util/testutil.cc.s
 	$(MAKE) -f CMakeFiles/autocompact_test.dir/build.make CMakeFiles/autocompact_test.dir/util/testutil.cc.s
@@ -2774,9 +2731,6 @@ util/testutil.cc.s:
 	$(MAKE) -f CMakeFiles/log_test.dir/build.make CMakeFiles/log_test.dir/util/testutil.cc.s
 	$(MAKE) -f CMakeFiles/recovery_test.dir/build.make CMakeFiles/recovery_test.dir/util/testutil.cc.s
 	$(MAKE) -f CMakeFiles/version_set_test.dir/build.make CMakeFiles/version_set_test.dir/util/testutil.cc.s
-	$(MAKE) -f CMakeFiles/crc32c_test.dir/build.make CMakeFiles/crc32c_test.dir/util/testutil.cc.s
-	$(MAKE) -f CMakeFiles/cache_test.dir/build.make CMakeFiles/cache_test.dir/util/testutil.cc.s
-	$(MAKE) -f CMakeFiles/skiplist_test.dir/build.make CMakeFiles/skiplist_test.dir/util/testutil.cc.s
 	$(MAKE) -f CMakeFiles/version_edit_test.dir/build.make CMakeFiles/version_edit_test.dir/util/testutil.cc.s
 	$(MAKE) -f CMakeFiles/corruption_test.dir/build.make CMakeFiles/corruption_test.dir/util/testutil.cc.s
 	$(MAKE) -f CMakeFiles/filter_block_test.dir/build.make CMakeFiles/filter_block_test.dir/util/testutil.cc.s
@@ -2797,6 +2751,8 @@ help:
 	@echo "... hash_test"
 	@echo "... edit_cache"
 	@echo "... coding_test"
+	@echo "... crc32c_test"
+	@echo "... cache_test"
 	@echo "... bloom_test"
 	@echo "... arena_test"
 	@echo "... list_install_components"
@@ -2821,9 +2777,6 @@ help:
 	@echo "... log_test"
 	@echo "... recovery_test"
 	@echo "... version_set_test"
-	@echo "... crc32c_test"
-	@echo "... cache_test"
-	@echo "... skiplist_test"
 	@echo "... version_edit_test"
 	@echo "... corruption_test"
 	@echo "... filter_block_test"
@@ -2893,9 +2846,6 @@ help:
 	@echo "... db/repair.o"
 	@echo "... db/repair.i"
 	@echo "... db/repair.s"
-	@echo "... db/skiplist_test.o"
-	@echo "... db/skiplist_test.i"
-	@echo "... db/skiplist_test.s"
 	@echo "... db/table_cache.o"
 	@echo "... db/table_cache.i"
 	@echo "... db/table_cache.s"

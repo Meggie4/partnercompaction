@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_FLAGS =   -std=c++11
 
-CXX_DEFINES = 
+CXX_DEFINES = -DENABLE_RECOVERY -DUSE_OFFSETS
 
 CXX_INCLUDES = -I/home/meggie/文档/partnercompaction/build/include -I/home/meggie/文档/partnercompaction -I/home/meggie/文档/partnercompaction/include 
 

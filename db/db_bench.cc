@@ -130,6 +130,9 @@ static bool FLAGS_reuse_logs = false;
 
 // Use the db with the following name.
 static const char* FLAGS_db = nullptr;
+/////////////meggie
+static const char* FLAGS_nvmdb = nullptr;
+/////////////meggie
 
 namespace leveldb {
 
@@ -559,7 +562,9 @@ class Benchmark {
     }
     
     if (!FLAGS_use_existing_db) {
-      DestroyDB(FLAGS_db, Options());
+      /////////////meggie
+      DestroyDB(FLAGS_db, Options(), FLAGS_nvmdb);
+      /////////////meggie
     }
   }
 
@@ -824,7 +829,9 @@ class Benchmark {
         } else {
           delete db_;
           db_ = nullptr;
-          DestroyDB(FLAGS_db, Options());
+          //////////////meggie
+          DestroyDB(FLAGS_db, Options(), FLAGS_nvmdb);
+          //////////////meggie
           Open();
         }
       }
@@ -1008,7 +1015,9 @@ class Benchmark {
     options.max_open_files = FLAGS_open_files;
     options.filter_policy = filter_policy_;
     options.reuse_logs = FLAGS_reuse_logs;
-    Status s = DB::Open(options, FLAGS_db, &db_);
+    /////////////meggie
+    Status s = DB::Open(options, FLAGS_db, &db_, FLAGS_nvmdb);
+    /////////////meggie
     if (!s.ok()) {
       fprintf(stderr, "open error: %s\n", s.ToString().c_str());
       exit(1);
@@ -1498,6 +1507,9 @@ int main(int argc, char** argv) {
   FLAGS_block_size = leveldb::Options().block_size;
   FLAGS_open_files = leveldb::Options().max_open_files;
   std::string default_db_path;
+  ////////////////meggie
+  std::string nvm_db_path;
+  ////////////////meggie
 
   for (int i = 1; i < argc; i++) {
     double d;
@@ -1552,6 +1564,14 @@ int main(int argc, char** argv) {
       default_db_path += "/dbbench";
       FLAGS_db = default_db_path.c_str();
   }
+
+  /////////////////meggie
+  if (FLAGS_nvmdb == nullptr) {
+      leveldb::g_env->GetMEMDirectory(&nvm_db_path);
+      nvm_db_path += "/dbbench";
+      FLAGS_nvmdb = nvm_db_path.c_str();
+  }
+  /////////////////meggie
 
   leveldb::Benchmark benchmark;
   benchmark.Run();

@@ -15,11 +15,13 @@ namespace leveldb {
 class VersionSet;
 
 ///////////meggie
+class MemTable;
 struct Partner {
     uint64_t partner_number;
 	uint64_t partner_size;
     InternalKey partner_smallest;
     InternalKey partner_largest;
+    MemTable* nvmtable;
 };
 ///////////meggie
 

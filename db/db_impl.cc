@@ -109,7 +109,8 @@ struct DBImpl::PartnerCompactionState {
         uint64_t number;
         uint64_t file_size;
         InternalKey smallest, largest;
-    }
+        MemTable* nvmtable;
+    };
 
     std::vector<Output> outputs;
     
@@ -119,7 +120,7 @@ struct DBImpl::PartnerCompactionState {
     
     Output* current_output() { return &outputs[outputs.size() - 1]; }
 
-    explicit CompactionState(Compaction* c)
+    explicit PartnerCompactionState(Compaction* c)
         : compaction(c),
           nvmtable(nullptr),
           nvmtable_entries(0),
@@ -137,7 +138,8 @@ static void ClipToRange(T* ptr, V minvalue, V maxvalue) {
 Options SanitizeOptions(const std::string& dbname,
                         const InternalKeyComparator* icmp,
                         const InternalFilterPolicy* ipolicy,
-                        const Options& src) {
+                        const Options& src, 
+                        const std::string& dbname_nvm) {
   Options result = src;
   result.comparator = icmp;
   result.filter_policy = (src.filter_policy != nullptr) ? ipolicy : nullptr;
@@ -148,6 +150,9 @@ Options SanitizeOptions(const std::string& dbname,
   if (result.info_log == nullptr) {
     // Open a log file in the same directory as the db
     src.env->CreateDir(dbname);  // In case it does not exist
+    ////////////meggie
+    src.env->CreateDir(dbname_nvm);  // In case it does not exist
+    ////////////meggie
     src.env->RenameFile(InfoLogFileName(dbname), OldInfoLogFileName(dbname));
     Status s = src.env->NewLogger(InfoLogFileName(dbname), &result.info_log);
     if (!s.ok()) {
@@ -175,15 +180,20 @@ static int TableCacheSize(const Options& sanitized_options) {
   return sanitized_options.max_open_files - kNumNonTableCacheFiles;
 }
 
-DBImpl::DBImpl(const Options& raw_options, const std::string& dbname)
+DBImpl::DBImpl(const Options& raw_options, const std::string& dbname, 
+               const std::string& dbname_nvm)
     : env_(raw_options.env),
       internal_comparator_(raw_options.comparator),
       internal_filter_policy_(raw_options.filter_policy),
       options_(SanitizeOptions(dbname, &internal_comparator_,
-                               &internal_filter_policy_, raw_options)),
+                               &internal_filter_policy_, raw_options, 
+                               dbname_nvm)),
       owns_info_log_(options_.info_log != raw_options.info_log),
       owns_cache_(options_.block_cache != raw_options.block_cache),
       dbname_(dbname),
+      /////////////meggie
+      dbname_nvm_(dbname_nvm),
+      /////////////meggie
       table_cache_(new TableCache(dbname_, options_, TableCacheSize(options_))),
       db_lock_(nullptr),
       shutting_down_(nullptr),
@@ -294,7 +304,15 @@ void DBImpl::DeleteObsoleteFiles() {
   versions_->AddLiveFiles(&live);
 
   std::vector<std::string> filenames;
+  //////////////meggie
+  std::vector<std::string> filenames_nvm;
+  //////////////meggie
   env_->GetChildren(dbname_, &filenames);  // Ignoring errors on purpose
+  //////////////meggie
+  env_->GetChildren(dbname_nvm_, &filenames_nvm);
+  filenames.insert(filenames.end(), filenames_nvm.begin(), 
+          filenames_nvm.end());
+  //////////////meggie
   uint64_t number;
   FileType type;
   for (size_t i = 0; i < filenames.size(); i++) {
@@ -313,6 +331,11 @@ void DBImpl::DeleteObsoleteFiles() {
         case kTableFile:
           keep = (live.find(number) != live.end());
           break;
+        ///////////meggie
+        case kMapFile:
+          keep = (live.find(number) != live.end());
+          break;
+        ///////////meggie
         case kTempFile:
           // Any temp files that are currently being written to must
           // be recorded in pending_outputs_, which is inserted into "live"
@@ -326,20 +349,26 @@ void DBImpl::DeleteObsoleteFiles() {
       }
 
       if (!keep) {
-        ////////////meggie
-        //if(number == partner_number) 
-          //  DEBUG_T("now Delete file%d\n", partner_number);
-        ////////////meggie
         if (type == kTableFile) {
           table_cache_->Evict(number);
         }
         Log(options_.info_log, "Delete type=%d #%lld\n",
             static_cast<int>(type),
             static_cast<unsigned long long>(number));
-        env_->DeleteFile(dbname_ + "/" + filenames[i]);
+        /////////////meggie
+        if(type == kMapFile) {
+          DEBUG_T("delete map file %d, ", number);
+          DEBUG_T(":%s\n", filenames[i].c_str());
+          partner_mapping_[number]->Unref(); 
+          env_->DeleteFile(dbname_nvm_ + "/" + filenames[i]);      
+          DEBUG_T("after delete map file\n");
+        } else 
+          env_->DeleteFile(dbname_ + "/" + filenames[i]);
+        /////////////meggie
       }
     }
   }
+  DEBUG_T("after DeleteObsoleteFiles\n");
 }
 
 Status DBImpl::Recover(VersionEdit* edit, bool *save_manifest) {
@@ -823,7 +852,7 @@ void DBImpl::BackgroundCompaction() {
         versions_->LevelSummary(&tmp));
   } else {
     ////////////meggie
-    if(c->level() == 0) {
+    if(c->level() >= 0) {
         CompactionState* compact = new CompactionState(c);
         status = DoCompactionWork(compact);
         if (!status.ok()) {
@@ -991,7 +1020,7 @@ struct DBImpl::TraditionalCompactionArgs {
 
 struct DBImpl::PartnerCompactionArgs {
     DBImpl* db;
-    CompactionState* compact;
+    PartnerCompactionState* compact;
     SplitCompaction* p_sptcompaction;
 };
 
@@ -1041,7 +1070,7 @@ void DBImpl::UpdateFileWithPartnerCompaction(VersionEdit* edit,
 
    for(int i = 0; i < sz1; i++) {
        SplitCompaction* p_sptcompaction = p_sptcompactions[i];
-       CompactionState* compact = p_compactionstate_list[i];
+       PartnerCompactionState* compact = p_compactionstate_list[i];
        std::vector<Partner> partners;
        FileMetaData* fm1 = c->input(1, p_sptcompaction->inputs1_index);
        if(compact == nullptr) {
@@ -1093,16 +1122,21 @@ void DBImpl::UpdateFileWithPartnerCompaction(VersionEdit* edit,
            fm1->nvm_partners = false;
        } else {
            for(size_t j = 0; j < compact->outputs.size(); j++) {
-              const CompactionState::Output& out = compact->outputs[j];
+              const PartnerCompactionState::Output& out = compact->outputs[j];
               Partner ptner; 
               ptner.partner_number = out.number;
               ptner.partner_size = out.file_size;
               ptner.partner_smallest = out.smallest;
               ptner.partner_largest = out.largest;
+              ptner.nvmtable = out.nvmtable;
+              partner_mapping_.insert(std::make_pair(out.number, out.nvmtable));
               partners.push_back(ptner);
-              DEBUG_T("generated partner, number:%lld, size:%lld\n",
+              DEBUG_T("to generate partner\n");
+              DEBUG_T("generated partner, number:%lld, size:%lld, partner_smallest:%s, partner_largest:%s\n",
                       ptner.partner_number, 
-                      ptner.partner_size);
+                      ptner.partner_size, 
+                      ptner.partner_smallest.user_key().ToString().c_str(),
+                      ptner.partner_largest.user_key().ToString().c_str());
               generated_partner_num++;
            }
            fm1->nvm_partners = true;
@@ -1147,7 +1181,7 @@ bool DBImpl::ValidAndInRange(Iterator* iter, InternalKey end,
 
 void DBImpl::DealWithTraditionCompaction(CompactionState* compact, 
                         TSplitCompaction* t_sptcompaction) {
-	DEBUG_T("in DealWithTraditionCompaction\n");
+	("in DealWithTraditionCompaction\n");
 	DEBUG_T("victim_start:%s, victim_end:%s\n", 
 					t_sptcompaction->victim_start.user_key().ToString().c_str(),
 					t_sptcompaction->victim_end.user_key().ToString().c_str());
@@ -1170,6 +1204,7 @@ void DBImpl::DealWithTraditionCompaction(CompactionState* compact,
     bool has_current_user_key = false;
     SequenceNumber last_sequence_for_key = kMaxSequenceNumber;
 
+    const uint64_t start_micros = env_->NowMicros();
     for(; merge_iter->Valid() && !shutting_down_.Acquire_Load(); ) {
         Slice key = merge_iter->key();
         bool drop = false;
@@ -1238,29 +1273,90 @@ void DBImpl::DealWithTraditionCompaction(CompactionState* compact,
         RecordBackgroundError(status);
     }
     delete merge_iter;
+    const uint64_t end_micros = env_->NowMicros();
+    DEBUG_T("generate ssdtable needs %lld\n", end_micros - start_micros);
 }
 
-MemTable* DBImpl::CreateNVMTable(){
-    MemTable* mem;
-#ifdef ENABLE_RECOVERY
-    //Log(options_.info_log, "Meggie, new ArenaNVM, start"); 
-    uint64_t new_map_number = versions_->NewFileNumber();
-    std::string filename = MapFileName(dbname_nvm_, new_map_number);
-    size_t size = max_file_size;
-    ArenaNVM *arena= new ArenaNVM(size, &filename, false);
-#else
-    ArenaNVM *arena= new ArenaNVM();
-#endif
-    //Log(options_.info_log, "Meggie, new MemTable, start"); 
-    mem = new MemTable(internal_comparator_, *arena, false);
-    //Log(options_.info_log, "Meggie, new memtable, end"); 
+Status DBImpl::OpenCompactionNVMTable(PartnerCompactionState* compact){
+    uint64_t file_number;
+    {
+        mutex_.Lock();
+        file_number = versions_->NewFileNumber();
+        pending_outputs_.insert(file_number);
+        PartnerCompactionState::Output out;
+        out.number = file_number;
+        out.smallest.Clear();
+        out.largest.Clear();
+        compact->outputs.push_back(out);
+        mutex_.Unlock();
+    }
+    std::string filename = MapFileName(dbname_nvm_, file_number);
+    size_t size = options_.max_file_size;
+    ArenaNVM *arena = new ArenaNVM(size, &filename, false);
+    MemTable* mem = new MemTable(internal_comparator_, *arena, false);
     mem->isNVMMemtable = true;
     mem->Ref();
     assert(mem);
-    return mem;
+    compact->nvmtable = mem;
+    return Status::OK();
 }
 
-void DBImpl::DealWithPartnerCompaction(CompactionState* compact, 
+void DBImpl::CleanupPartnerCompaction(PartnerCompactionState* compact) {
+  mutex_.AssertHeld();
+  for (size_t i = 0; i < compact->outputs.size(); i++) {
+    const PartnerCompactionState::Output& out = compact->outputs[i];
+    pending_outputs_.erase(out.number);
+  }
+  delete compact;
+}
+
+Status DBImpl::FinishCompactionNVMTable(PartnerCompactionState* compact,
+                                        Iterator* input) {
+  assert(compact != nullptr);
+  assert(compact->nvmtable != nullptr);
+
+  // Check for iterator errors
+  Status s = input->status();
+  const uint64_t current_entries = compact->nvmtable_entries;
+  
+  const uint64_t current_bytes = compact->nvmtable->ApproximateMemoryUsage();
+  compact->current_output()->file_size = current_bytes;
+  compact->current_output()->nvmtable = compact->nvmtable;
+
+  //DEBUG_T("generate partner number:%d, address:%p\n", 
+  //        compact->current_output()->number, 
+  //        compact->nvmtable);
+  //{
+  //    Iterator* iter = compact->nvmtable->NewIterator();
+  //    DEBUG_T("in FinishCompactionNVMTable, before SeekToFirst\n");
+  //    iter->SeekToFirst();
+  //    DEBUG_T("in FinishCompactionNVMTable, after SeekToFirst\n");
+  //    int count = 0;
+  //    for(; iter->Valid(); iter->Next()){
+  //      count++;
+  //      Slice key = iter->key();
+  //      ParsedInternalKey ikey;
+  //      if(!ParseInternalKey(key, &ikey)){
+  //          DEBUG_T("ParseInternalKey failed");
+  //          break;
+  //      }
+  //      DEBUG_T("%s, ", ikey.user_key.ToString().c_str());
+  //      if(count % 8 == 0)
+  //          DEBUG_T("\n");
+  //    }
+  //    delete iter;
+  //}
+
+
+  compact->total_bytes += current_bytes;
+  
+  compact->nvmtable = nullptr;
+  compact->nvmtable_entries = 0;
+
+  return s;
+}
+
+void DBImpl::DealWithPartnerCompaction(PartnerCompactionState* compact, 
                             SplitCompaction* p_sptcompaction) {
 	DEBUG_T("in DealWithPartnerCompaction\n");
 	DEBUG_T("victim_start:%s, victim_end:%s, containsend:%d\n", 
@@ -1268,21 +1364,23 @@ void DBImpl::DealWithPartnerCompaction(CompactionState* compact,
 			p_sptcompaction->victim_end.user_key().ToString().c_str(),
             p_sptcompaction->containsend? 1: 0);
     assert(versions_->NumLevelFiles(compact->compaction->level()) > 0);
-    assert(compact->builder == nullptr);
-    assert(compact->outfile == nullptr);
+    assert(compact->nvmtable == nullptr);
 
     Iterator* input = p_sptcompaction->victim_iter;
     InternalKey victim_end = p_sptcompaction->victim_end;
     bool containsend = p_sptcompaction->containsend;
 
     input->Seek(p_sptcompaction->victim_start.Encode());
-    
+   
+    //DEBUG_T("to generate nvm partner\n");
+
     Status status;
     ParsedInternalKey ikey;
     std::string current_user_key;
     bool has_current_user_key = false;
     SequenceNumber last_sequence_for_key = kMaxSequenceNumber;
 
+    const uint64_t start_micros = env_->NowMicros();
     for(; ValidAndInRange(input, victim_end, containsend, &ikey) 
                 && !shutting_down_.Acquire_Load(); ) {
         //DEBUG_T("partner compaction, user_key:%s\n",
@@ -1320,12 +1418,12 @@ void DBImpl::DealWithPartnerCompaction(CompactionState* compact,
         
         if(!drop) {
             if(compact->nvmtable == nullptr) {
-                compact->nvmtable = CreateNVMTable();
+                status = OpenCompactionNVMTable(compact);
                 if(!status.ok()) {
                     break;
                 }
             }    
-            if(compact->nvmtable->nvmtable_entries == 0) {
+            if(compact->nvmtable_entries == 0) {
                 compact->current_output()->smallest.DecodeFrom(key);
             }
 
@@ -1335,8 +1433,7 @@ void DBImpl::DealWithPartnerCompaction(CompactionState* compact,
 
             if(compact->nvmtable->ApproximateMemoryUsage() >= 
                     compact->compaction->MaxOutputFileSize()) {
-                compact->nvmtable = nullptr;
-                compact->nvmtable_entries = 0;
+                FinishCompactionNVMTable(compact, input);
             }
         }
 
@@ -1346,10 +1443,16 @@ void DBImpl::DealWithPartnerCompaction(CompactionState* compact,
     if(status.ok() && shutting_down_.Acquire_Load()) {
         status = Status::IOError("Deleting DB during compaction");
     }
+
+    if(status.ok() && compact->nvmtable != nullptr) {
+        status = FinishCompactionNVMTable(compact, input);
+    }
    
     if(!status.ok()) {
         RecordBackgroundError(status);
     }
+    const uint64_t end_micros = env_->NowMicros();
+    DEBUG_T("generate nvmtable needs %lld\n", end_micros - start_micros);
 }
 
 //void DBImpl::DealWithPartnerCompaction(CompactionState* compact, 
@@ -1654,7 +1757,7 @@ Status DBImpl::DoSplitCompactionWork(Compaction* c) {
 	for(int i = 0; i < p_sptcompactions.size(); i++) {
 		delete p_sptcompactions[i];
         if(p_compactionstate_list[i] != nullptr)
-            CleanupCompaction(p_compactionstate_list[i]);
+            CleanupPartnerCompaction(p_compactionstate_list[i]);
     }
 
     DEBUG_T("-------------finish DoSplitCompactionWork-----------\n\n");
@@ -2313,10 +2416,13 @@ Status DB::Delete(const WriteOptions& opt, const Slice& key) {
 DB::~DB() { }
 
 Status DB::Open(const Options& options, const std::string& dbname,
-                DB** dbptr) {
+                DB** dbptr, const std::string& dbname_nvm) {
   *dbptr = nullptr;
 
-  DBImpl* impl = new DBImpl(options, dbname);
+  /////////////////meggie
+  DBImpl* impl = new DBImpl(options, dbname, dbname_nvm);
+  /////////////////meggie
+  
   impl->mutex_.Lock();
   VersionEdit edit;
   // Recover handles create_if_missing, error_if_exists
@@ -2362,15 +2468,29 @@ Status DB::Open(const Options& options, const std::string& dbname,
 Snapshot::~Snapshot() {
 }
 
-Status DestroyDB(const std::string& dbname, const Options& options) {
+Status DestroyDB(const std::string& dbname, const Options& options, 
+                const std::string& dbname_nvm) {
   Env* env = options.env;
   std::vector<std::string> filenames;
+  //////////////meggie
+  std::vector<std::string> filenames_nvm;
+  //////////////meggie
   Status result = env->GetChildren(dbname, &filenames);
   if (!result.ok()) {
     // Ignore error in case directory does not exist
+    DEBUG_T("ssd GetChildren failed\n");
     return Status::OK();
   }
 
+  //////////////meggie
+  result = env->GetChildren(dbname_nvm, &filenames_nvm);
+  if(!result.ok()){
+    DEBUG_T("nvm GetChildren failed\n");
+    return Status::OK();
+  }
+  filenames.insert(filenames.end(), filenames_nvm.begin(), 
+          filenames_nvm.end());
+  //////////////meggie
   FileLock* lock;
   const std::string lockname = LockFileName(dbname);
   result = env->LockFile(lockname, &lock);
@@ -2380,7 +2500,17 @@ Status DestroyDB(const std::string& dbname, const Options& options) {
     for (size_t i = 0; i < filenames.size(); i++) {
       if (ParseFileName(filenames[i], &number, &type) &&
           type != kDBLockFile) {  // Lock file will be deleted at end
-        Status del = env->DeleteFile(dbname + "/" + filenames[i]);
+        Status del;
+        /////////////////meggie
+        if(find(filenames_nvm.begin(), filenames_nvm.end(), filenames[i]) != filenames_nvm.end()){
+            //DEBUG_T("nvm filenames:%s, delete\n", filenames[i].c_str());
+            del = env->DeleteFile(dbname_nvm + "/" + filenames[i]);
+        }
+        else{ 
+          //DEBUG_T("ssd filenames:%s, delete\n", filenames[i].c_str());
+          del = env->DeleteFile(dbname + "/" + filenames[i]);
+        }
+        /////////////////meggie
         if (result.ok() && !del.ok()) {
           result = del;
         }
@@ -2389,6 +2519,11 @@ Status DestroyDB(const std::string& dbname, const Options& options) {
     env->UnlockFile(lock);  // Ignore error since state is already gone
     env->DeleteFile(lockname);
     env->DeleteDir(dbname);  // Ignore error in case dir contains other files
+    ///////////////meggie
+    env->DeleteDir(dbname_nvm);
+    ///////////////meggie
+  } else {
+    DEBUG_T("lock file failed\n");
   }
   return result;
 }

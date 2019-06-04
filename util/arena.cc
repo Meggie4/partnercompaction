@@ -196,11 +196,11 @@ void* ArenaNVM::operator new[](size_t size) {
 }
 
 ArenaNVM::~ArenaNVM() {
-    DEBUG_T("delete ArenaNVM, blocks size:%d\n", blocks_.size());
+    //DEBUG_T("delete ArenaNVM, blocks size:%d\n", blocks_.size());
     for (size_t i = 0; i < blocks_.size(); i++) {
 #ifdef ENABLE_RECOVERY
         munmap(blocks_[i], MEM_THRESH * kSize);
-        DEBUG_T("munmap, end\n");
+        //DEBUG_T("munmap, end\n");
         blocks_[i] = NULL;
     }
     close(fd);
@@ -243,14 +243,14 @@ char* ArenaNVM::AllocateNVMBlock(size_t block_bytes) {
             block_bytes, mmap_size);
 
     char *result = (char *)mmap(NULL, mmap_size, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
-    DEBUG_T("get mmap, end,result:%p, mmap_size:%zu\n", 
-            result, mmap_size);
+    //DEBUG_T("get mmap, end,result:%p, mmap_size:%zu\n", 
+      //      result, mmap_size);
     //fprintf(stderr, "nvmarena size:%zd\n", block_bytes);
     memset(result, 0, mmap_size);
-    DEBUG_T("after memset, end\n");
+    //DEBUG_T("after memset, end\n");
     allocation = true;
     blocks_.push_back(result);
-    DEBUG_T("after push_back, end\n");
+    //DEBUG_T("after push_back, end\n");
     assert(blocks_.size() <= 1);
 #else
     char* result = new char[block_bytes];
