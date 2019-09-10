@@ -59,9 +59,9 @@ class LEVELDB_EXPORT Table {
   // be close to the file length.
   uint64_t ApproximateOffsetOf(const Slice& key) const;
   ////////////////////meggie
-  void GreaterAndEqual(const Slice& key, std::string& result) const;
-  void LessAndEqual(const Slice& key, std::string& result) const; 
-  void LessThan(const Slice& key, std::string& result) const;
+  const Slice GreaterAndEqual(const Slice& key) const;
+  const Slice LessAndEqual(const Slice& key) const; 
+  const Slice LessThan(const Slice& key) const;
   ////////////////////meggie
 
  private:

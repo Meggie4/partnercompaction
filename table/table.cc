@@ -283,86 +283,63 @@ uint64_t Table::ApproximateOffsetOf(const Slice& key) const {
 }
 
 /////////////////////meggie
-void Table::GreaterAndEqual(const Slice& key, std::string& result) const {
+const Slice Table::GreaterAndEqual(const Slice& key) const {
     Iterator* iter = NewIterator(ReadOptions());
-    
-    ParsedInternalKey ikey; 
-    ParseInternalKey(key, &ikey);
-    InternalKey Newikey(ikey.user_key, kMaxSequenceNumber, ikey.type);
-    const Slice NewKey = Newikey.Encode();
-
-    iter->Seek(NewKey);
-    Slice findkey;
+    iter->Seek(key);
+    Slice result;
     if(iter->Valid()){
-        findkey = iter->key();
-        if(!ParseInternalKey(findkey, &ikey))
-            DEBUG_T("GreaterAndEqual, ParseInternalKey failed\n");
-        else 
-            DEBUG_T("GreaterAndEqual, user_key:%s\n", ikey.user_key.ToString().c_str());
+        result = iter->key();
     } else {
         DEBUG_T("GreaterAndEqual failed\n");
     }
-    result.assign(findkey.data(), findkey.size());
     delete iter;
+    return result;
 }
 
-void Table::LessAndEqual(const Slice& key, std::string& result) const {
+const Slice Table::LessAndEqual(const Slice& key) const {
     Iterator* iter = NewIterator(ReadOptions());
-    
-    ParsedInternalKey ikey; 
-    ParseInternalKey(key, &ikey);
-    InternalKey Newikey(ikey.user_key, kMaxSequenceNumber, ikey.type);
-    const Slice NewKey = Newikey.Encode();
-    
-    Slice findkey;
-    iter->Seek(NewKey);
+    Slice result;
+    iter->Seek(key);
     const Comparator* user_comparator = BytewiseComparator();
     if(iter->Valid()){
-        findkey = iter->key();
-        ParsedInternalKey tmpikey;
-        ParseInternalKey(findkey, &tmpikey);
+        Slice tmpkey = iter->key();
+        ParsedInternalKey tmpikey, ikey;
+        ParseInternalKey(tmpkey, &tmpikey);
         ParseInternalKey(key, &ikey);
         if(user_comparator->Compare(tmpikey.user_key, ikey.user_key) == 0)
-        ////do nothing
-            ;
+            result = tmpkey;
         else {
             iter->Prev();
             if(iter->Valid()){
-                findkey = iter->key();
+                result = iter->key();
             }
         }
         
     } else {
         iter->SeekToLast();
         if(iter->Valid())
-            findkey = iter->key();
+            result = iter->key();
     }
 
-    result.assign(findkey.data(), findkey.size());
     delete iter;
+    return result;
 }
 
-void Table::LessThan(const Slice& key, std::string& result) const {
+const Slice Table::LessThan(const Slice& key) const {
     Iterator* iter = NewIterator(ReadOptions());
-    
-    ParsedInternalKey ikey; 
-    ParseInternalKey(key, &ikey);
-    InternalKey Newikey(ikey.user_key, kMaxSequenceNumber, ikey.type);
-    const Slice NewKey = Newikey.Encode();
-    
-    Slice findkey;
-    iter->Seek(NewKey);
+    Slice result;
+    iter->Seek(key);
     if(iter->Valid()) {
         iter->Prev();
         if(iter->Valid())
-            findkey = iter->key();
+            result = iter->key();
     } else {
         iter->SeekToLast();
         if(iter->Valid())
-            findkey = iter->key();
+            result = iter->key();
     }
-    result.assign(findkey.data(), findkey.size());
     delete iter;
+    return result;
 }
 /////////////////////meggie
 

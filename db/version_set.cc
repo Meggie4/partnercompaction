@@ -338,14 +338,13 @@ static Iterator* GetFileIteratorWithPartner(void* arg,
 
 		FileMetaData* file = (*flist)[index];
 		
-        //DEBUG_T("GetFileIteratorWithPartner:\n");
         //DEBUG_T("file->number:%lld\n", file->number);
 
 		int sz = file->partners.size() + 1;
 		Iterator** list = new Iterator*[sz];
 		list[0] = cache->NewIterator(options, file->number, file->file_size);
-        //DEBUG_T("partners:\n");
 		for(int i = 0; i < sz - 1; i++) {
+<<<<<<< HEAD
            // DEBUG_T("partner_number:%lld, partner_smallest:%s, partner_largest:%s\n", 
            //     file->partners[i].partner_number, 
            //     file->partners[i].partner_smallest.user_key().ToString().c_str(),
@@ -391,9 +390,15 @@ static Iterator* GetFileIteratorWithPartner(void* arg,
             //        DEBUG_T("\n");
             //}
             //DEBUG_T("scan end\n");
+=======
+            Iterator* iter = cache->NewIterator(options,
+								  file->partners[i].partner_number,
+								  file->partners[i].partner_size);
+            iter->SetRange(file->partners[i].partner_smallest.Encode(), 
+                           file->partners[i].partner_largest.Encode());
+>>>>>>> parent of ff71dd4... 现在利用了victim sstable作为partner, 读写暂时也没问题
 			list[i + 1] = iter;
 		}
-
 		return NewMergingIterator(&global_icmp, list, sz);
 	}
 }
@@ -403,10 +408,8 @@ Iterator* VersionSet::NewIteratorWithPartner(TableCache* cache,
     int sz = file->partners.size() + 1;
     Iterator** list = new Iterator*[sz];
     list[0] = cache->NewIterator(ReadOptions(), file->number, file->file_size);
-    //DEBUG_T("GetFileIteratorWithPartner:\n");
-    //DEBUG_T("file->number:%lld\n", file->number);
-    //DEBUG_T("partners:\n");
     for(int i = 0; i < sz - 1; i++) {
+<<<<<<< HEAD
         Iterator* iter;
         if(file->nvm_partners){
             DEBUG_T("nvm partner_number:%lld, partner_smallest:%s, partner_largest:%s\n", file->partners[i].partner_number, 
@@ -452,6 +455,11 @@ Iterator* VersionSet::NewIteratorWithPartner(TableCache* cache,
         //}
         //DEBUG_T("scan end\n");
         list[i + 1] = iter;
+=======
+        list[i + 1] = cache->NewIterator(ReadOptions(),
+                              file->partners[i].partner_number,
+                              file->partners[i].partner_size);
+>>>>>>> parent of ff71dd4... 现在利用了victim sstable作为partner, 读写暂时也没问题
     }
     return NewMergingIterator(&icmp_, list, sz);
 }
@@ -1077,6 +1085,7 @@ class VersionSet::Builder {
 	   fm->refs = 1;
 	   std::vector<Partner>& partners = levels_[level].updated_files[f->number];
 	   fm->partners.assign(partners.begin(), partners.end());	   
+	   
 	   for(int j =0; j < fm->partners.size(); j++){
 		   Partner& ptner = fm->partners[j];
 		   DEBUG_T("get partner, origin SSTable:%d, smallest:%s, largest:%s\n", 
@@ -1107,8 +1116,7 @@ class VersionSet::Builder {
 	} else {
 	//////////meggie
       //if(level > 1)
-      //   DEBUG_T("MaybeAddFile, number:%d, smallest:%s, largest:%s\n",
-      //        f->number,
+      //   DEBUG_T("MaybeAddFile, smallest:%s, largest:%s\n",
       //        f->smallest.user_key().ToString().c_str(),
       //        f->largest.user_key().ToString().c_str());
       std::vector<FileMetaData*>* files = &v->files_[level];
